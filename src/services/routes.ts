@@ -1,0 +1,70 @@
+import {createRouter, createWebHistory, RouteMeta} from 'vue-router'
+import HomePage from '../pages/HomePage.vue'
+import OpenIdConnectCallback from '../pages/OpenIdConnectCallback.vue'
+import ErrorPage from '../pages/ErrorPage.vue'
+import {userManager} from "./oidc";
+import {User} from "oidc-client-ts";
+import UsersNoRolePage from "../pages/UsersNoRolePage.vue";
+
+const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            path: '/', component: HomePage,
+            meta: {
+                requiredScopes: ['dealerOrg', 'stihl_ddc'],
+                requiredClaim: 'ddc_role'
+            }
+        },
+        {path: '/openid-connect-callback', component: OpenIdConnectCallback},
+        {path: '/error', component: ErrorPage},
+        //{path: '*', component: ErrorPage} // 404
+    ]
+})
+
+
+/*router.beforeEach((to, from, next) => {
+    console.debug(`[router] to:${to.path}`)
+
+    // handle authorization
+    const routeMeta = to.matched && to.matched.length > 0 ? to.matched[0].meta : null;
+    if (routeMeta && (routeMeta.requiredScopes || routeMeta.requiredClaim)) {
+        console.debug(`[router] protected route ${to.path} ${to.params}`)
+
+        // AM doesn't interpret locale: 'ro-RO' is not evaluated to  'ro', but defaults to 'en'
+        const ui_locales = to.query.locale
+
+        userManager.getUser().then(
+            async user => {
+                // check if user logged or expired or first-app-load
+                if (!user || user.expired || !await haveValidToken(user)) {
+                    next(false) // cancel current route
+                    console.log(`[router] no valid token. starting auth (state:${to.fullPath}, ui_locales:${ui_locales})...`)
+                    userManager.signinRedirect({
+                        state: to.fullPath,
+                        //TODO ui_locales: ui_locales,
+                    }).catch(function (err) {
+                        console.error(`[router] oidc-auth-error: ${err}`)
+                    })
+                    return
+                }
+
+                if (hasAccess(user, routeMeta)) {
+                    next();
+                } else {
+                    console.error(`no access to ${to.path}`)
+                    next('/access-denied');
+                }
+            },
+            err => {
+                console.log(`[router] login failed: ${err}`)
+                next('/access-denied');
+            }
+        );
+    } else {
+        console.debug(`[router] public route ${to.path}`)
+        next();
+    }
+})*/
+
+export default router

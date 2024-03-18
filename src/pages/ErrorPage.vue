@@ -1,19 +1,20 @@
 <template>
   <div id="home-page" class="container-fluid container h-100">
 
-    <ddc-error :title="$t('ddc.error.title')" :message="$t('ddc.error.generic')" v-if="!status"/>
-    <ddc-error :title="$t('ddc.error.title403')" :message="$t('ddc.error.403')" v-if="status===403"/>
+    <h1 class="title text-danger">Error</h1>
+
+    <p>There was an error</p>
 
   </div>
 </template>
 
 <script lang="ts">
-import DdcError from "../components/DdcError.vue";
 import {defineComponent} from "vue";
 
+//TODO
+
 export default defineComponent({
-  name: "GenericError",
-  components: {DdcError},
+  name: "ErrorPage",
   props: {
     status: null,
   },

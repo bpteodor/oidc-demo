@@ -4,7 +4,6 @@ import router from './services/routes'
 
 import App from './App.vue'
 import './assets/scss/application.scss'
-import utils from "./services/utils";
 
 declare global {
     interface Window {
@@ -17,7 +16,6 @@ axios.defaults.timeout = window.APP_CONFIG.axios.defaults.timout
 
 // initialize app
 export const app = createApp(App)
-    .use(utils)
     .use(router)
     .mount('#app')
 

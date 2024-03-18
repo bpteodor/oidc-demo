@@ -12,7 +12,7 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
-  name: 'Spinner',
+  name: 'LoadingSpinner',
   props: {
     class: null,
   }

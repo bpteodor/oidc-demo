@@ -6,13 +6,9 @@ export default defineConfig({
     base: "/auth/demo/",
     plugins: [vue()],
     server: {
+        port: 3000,
         // https://vitejs.dev/config/#server-proxy
         /*proxy: {
-            '^/ddc/svc/.*|/ddc/login|/ddc/logout': {
-                target: 'http://localhost:8080',
-                changeOrigin: true,
-                //rewrite: (path) => path.replace(/^\/api/, '')
-            },
             '^/auth': {
                 target: 'https://stihl.dev-servicelayers.io',
                 ws: true,

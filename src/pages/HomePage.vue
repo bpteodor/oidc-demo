@@ -38,18 +38,11 @@
 </template>
 
 <script lang="ts">
-//import DataTable, {TableColumns, TableItem} from '../components/DataTable.vue'
-//import SyncSelectorModal from "./SyncSelectorModal.vue";
-//import Multiselect from '@vueform/multiselect'
-import Overlay from "../components/Overlay.vue";
-import BootstrapAlerts from "../components/BootstrapAlerts.vue";
 import {defineComponent} from "vue";
-//import {DisplayableOrg, OrganizationData, UserData} from "../services/utils";
-//import {i18n} from "../lang";
 
 export default defineComponent({
   name: "HomePage",
-  components: {BootstrapAlerts, Overlay},
+  components: {},
   data() {
     return {
       authForm: {

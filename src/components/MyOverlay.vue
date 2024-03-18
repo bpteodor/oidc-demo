@@ -1,25 +1,26 @@
 <template>
-  <div class="position-relative h-100 stihl-overlay-wrap">
+  <div class="position-relative h-100 stihl-overlay-wrap" :class="wrapClass">
 
     <slot></slot>
 
     <div class="position-absolute overlay stihl-overlay" v-if="active">
-      <spinner v-if="spinner" :class="spinnerClass"/>
+      <loading-spinner v-if="showSpinner" :class="spinnerClass"/>
     </div>
 
   </div>
 </template>
 
 <script lang="ts">
-import Spinner from "./Spinner.vue";
-import {defineComponent} from "vue";
+import {defineComponent} from "vue"
+import LoadingSpinner from "./LoadingSpinner.vue";
 
 export default defineComponent({
-  name: 'StihlOverlay',
-  components: {Spinner},
+  name: 'MyOverlay',
+  components: {LoadingSpinner},
   props: {
     active: {type: Boolean, default: true},
-    spinner: Boolean,
+    showSpinner: {type: Boolean, default: true},
+    wrapClass: null,
     spinnerClass: null,
   }
 })

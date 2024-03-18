@@ -1,24 +1,14 @@
-import {createRouter, createWebHistory, RouteMeta} from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import HomePage from '../pages/HomePage.vue'
-import OpenIdConnectCallback from '../pages/OpenIdConnectCallback.vue'
 import ErrorPage from '../pages/ErrorPage.vue'
-import {userManager} from "./oidc";
-import {User} from "oidc-client-ts";
-import UsersNoRolePage from "../pages/UsersNoRolePage.vue";
+import OauthCallback from "../pages/OauthCallback.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
-        {
-            path: '/', component: HomePage,
-            meta: {
-                requiredScopes: ['dealerOrg', 'stihl_ddc'],
-                requiredClaim: 'ddc_role'
-            }
-        },
-        {path: '/openid-connect-callback', component: OpenIdConnectCallback},
+        {path: '/', component: HomePage,},
+        {path: '/oauth-callback', component: OauthCallback},
         {path: '/error', component: ErrorPage},
-        //{path: '*', component: ErrorPage} // 404
     ]
 })
 

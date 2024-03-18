@@ -26,12 +26,12 @@
             <li class="nav-item ml-auto" v-if="ddcRole">
               <button id="settings-link" type="button" class="btn nav-link" role="button"
                       data-bs-toggle="offcanvas" data-bs-target="#ocSettings">
-                <i class="bi bi-gear"></i> {{ $t('ddc.button.settings') }}
+                <i class="bi bi-gear"></i> Settings
               </button>
             </li>
             <li class="nav-item ml-auto">
               <button id="logout-link" type="submit" class="btn nav-link" @click="logout">
-                <i class="bi bi-box-arrow-right"></i> {{ $t('ddc.button.logout') }}
+                <i class="bi bi-box-arrow-right"></i> Logout
               </button>
             </li>
 

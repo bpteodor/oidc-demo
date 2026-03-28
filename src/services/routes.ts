@@ -1,8 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import HomePage from '../pages/HomePage.vue'
-import ErrorPage from '../pages/ErrorPage.vue'
-import OauthCallback from "../pages/OauthCallback.vue";
-import OPConfigPage from "../pages/OPConfigPage.vue";
+import HomePage from '../views/HomePage.vue'
+import ErrorPage from '../views/ErrorPage.vue'
+import OauthCallback from "../views/OauthCallback.vue";
+import OPConfigPage from "../views/OPConfigPage.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),

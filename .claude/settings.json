@@ -7,7 +7,17 @@
       "Bash(npm config:*)",
       "Bash(npm audit:*)",
       "Bash(grep -r \"*\" /home/teo/dev/src/my/oidc-demo/src --include=\"*.ts\" --include=\"*.vue\" -i)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(mkdir -p views components/layout components/ui components/stores)",
+      "Bash(mv pages/HomePage.vue views/HomePage.vue)",
+      "Bash(mv pages/OPConfigPage.vue views/OPConfigPage.vue)",
+      "Bash(mv pages/ErrorPage.vue views/ErrorPage.vue)",
+      "Bash(mv pages/OauthCallback.vue views/OauthCallback.vue)",
+      "Bash(mkdir -p components/ui components/stores)",
+      "Bash(mv components/LoadingSpinner.vue components/ui/LoadingSpinner.vue)",
+      "Bash(mv components/MyOverlay.vue components/ui/MyOverlay.vue)",
+      "Bash(mv stores/providers.ts components/stores/providers.ts)",
+      "Bash(rmdir stores:*)"
     ],
     "additionalDirectories": [
       "/home/teo/dev/src/my/oidc-demo/src/components"

@@ -68,11 +68,11 @@
 </template>
 
 <script lang="ts">
-import {userManager} from '../services/oidc'
+import {userManager} from '../../services/oidc'
 import {defineComponent} from "vue";
 import {User} from "oidc-client-ts";
 import {useProvidersStore} from '../stores/providers'
-import {useTheme} from '../composables/useTheme'
+import {useTheme} from '../../composables/useTheme'
 
 export default defineComponent({
   name: "MyHeader",

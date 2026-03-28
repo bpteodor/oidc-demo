@@ -11,7 +11,7 @@
 <script lang="ts">
 import {userManager} from '../services/oidc'
 import {defineComponent} from "vue";
-import MyOverlay from "../components/MyOverlay.vue";
+import MyOverlay from "../components/ui/MyOverlay.vue";
 
 export default defineComponent({
   name: 'OpenIdConnectCallback',

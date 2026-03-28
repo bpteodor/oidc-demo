@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue"
-import PageTemplate from '../components/ui/PageTemplate.vue'
+import PageTemplate from '../components/layout/PageTemplate.vue'
 
 //TODO
 

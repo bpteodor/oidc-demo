@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue"
-import PageTemplate, { type MenuItem } from '../components/ui/PageTemplate.vue'
+import PageTemplate, { type MenuItem } from '../components/layout/PageTemplate.vue'
 
 export default defineComponent({
   name: "HomePage",

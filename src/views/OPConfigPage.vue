@@ -113,8 +113,8 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import axios from 'axios'
-import {useProvidersStore} from '../stores/providers'
-import PageTemplate from '../components/ui/PageTemplate.vue'
+import {useProvidersStore} from '../components/stores/providers'
+import PageTemplate from '../components/layout/PageTemplate.vue'
 
 interface OPForm {
   name: string

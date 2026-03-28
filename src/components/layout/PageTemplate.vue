@@ -35,8 +35,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import MyHeader from '../MyHeader.vue'
-import MyFooter from '../MyFooter.vue'
+import MyHeader from './MyHeader.vue'
+import MyFooter from './MyFooter.vue'
 
 export interface MenuItem {
   label: string

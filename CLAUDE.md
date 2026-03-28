@@ -22,7 +22,7 @@ There is no test runner configured (vitest is a dev dependency but has no config
 
 ### Page layout
 
-All pages except `OauthCallback` use `src/components/ui/PageTemplate.vue`, which owns the full vertical layout:
+All views except `OauthCallback` use `src/components/layout/PageTemplate.vue`, which owns the full vertical layout:
 
 - MyHeader:  top bar (hidden inside iframes)
 - Page Content: (flex: 1, page content slot)
@@ -36,7 +36,7 @@ All pages except `OauthCallback` use `src/components/ui/PageTemplate.vue`, which
 ### Component organization
 
 The components are organized according to their type:
-- pages -> pages and modal dialogs
+- views -> pages and modal dialogs
 - components/layout -> for organizing the page (example: templates, header, footer)
 - components/ui -> components handling UI (example: button, input, select, etc)
 - components/stores -> pinia based stores

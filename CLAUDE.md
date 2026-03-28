@@ -14,7 +14,7 @@ There is no test runner configured (vitest is a dev dependency but has no config
 
 ## Architecture
 
-**Stack:** Vue 3 (Options API) · TypeScript · Vite · Bootstrap 5 + Bootstrap Icons · Pinia · `oidc-client-ts`
+**Stack:** Vue 3 (Options API) · TypeScript · Vite · Bootstrap 5 + Bootstrap Icons · Pinia · vue-18n · `oidc-client-ts`
 
 ### Runtime config
 
@@ -32,6 +32,16 @@ All pages except `OauthCallback` use `src/components/ui/PageTemplate.vue`, which
 `App.vue` only renders `<router-view>` and initialises the theme. Header/footer iframe detection lives in `PageTemplate`.
 
 `PageTemplate` accepts a `menuItems` prop (`MenuItem[]`) to drive the sidebar nav. Items support `exact: true` for exact-path active matching vs. prefix matching.
+
+### Component organization
+
+The components are organized according to their type:
+- pages -> pages and modal dialogs
+- components/layout -> for organizing the page (example: templates, header, footer)
+- components/ui -> components handling UI (example: button, input, select, etc)
+- components/stores -> pinia based stores
+- components/lang -> translations based on `vue-i18n`
+- components -> if nothing else fits
 
 ### Theme system
 

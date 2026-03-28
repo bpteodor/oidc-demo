@@ -50,22 +50,18 @@
           <h2 class="op-form__title">{{ isNew ? 'New Provider' : form.name || 'Edit Provider' }}</h2>
 
           <!-- Discovery -->
-          <div class="card mb-4">
-            <div class="card-header">Configuration</div>
-            <div class="card-body">
-              <input-group id="opName" v-model="form.name" label="Name" required placeholder="My Provider" :error="errors.name" hint="A short label to identify this provider." />
-            </div>
-          </div>
+          <app-card title="Configuration" class="mb-4">
+            <input-group id="opName" v-model="form.name" label="Name" required placeholder="My Provider" :error="errors.name" hint="A short label to identify this provider." />
+          </app-card>
 
           <!-- Configuration -->
-          <div class="card mb-4">
-            <div class="card-header">
+          <app-card class="mb-4">
+            <template #header>
               Discovery
               <button v-if="!showManual" class="btn btn-sm btn-default float-end" type="button" @click="showManual = true">
                 Enter manually
               </button>
-            </div>
-            <div class="card-body">
+            </template>
 
               <div class="mb-3">
                 <label for="discoveryUrl" class="form-label">Discovery URL</label>
@@ -99,8 +95,7 @@
                 <input-group id="scopesSupported" v-model="form.scopesSupported" label="Scopes Supported" placeholder="openid profile email" hint="Space-separated list of supported scopes." />
 
               </template>
-            </div>
-          </div>
+          </app-card>
 
           <!-- Actions -->
           <div class="d-flex gap-2 mb-5">
@@ -122,6 +117,7 @@ import axios from 'axios'
 import { useProvidersStore } from '../components/stores/providers'
 import PageTemplate from '../components/layout/PageTemplate.vue'
 import InputGroup from '../components/ui/InputGroup.vue'
+import AppCard from '../components/ui/AppCard.vue'
 
 interface OPForm {
   name: string
@@ -151,7 +147,7 @@ function emptyForm(): OPForm {
 
 export default defineComponent({
   name: 'ConfigPage',
-  components: { PageTemplate, InputGroup },
+  components: { PageTemplate, InputGroup, AppCard },
 
   setup() {
     return { providers: useProvidersStore() }

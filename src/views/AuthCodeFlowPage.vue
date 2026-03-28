@@ -13,10 +13,8 @@
       <template v-else>
 
         <!-- ── Configuration card ──────────────────────────────── -->
-        <div class="card mb-3">
-          <div class="card-header">Client</div>
-          <div class="card-body">
-            <div class="row g-3">
+        <app-card title="Client" class="mb-3">
+          <div class="row g-3">
 
               <div class="col-md-6">
                 <input-group v-model="form.clientId" label="Client ID" required placeholder="my-client" />
@@ -40,55 +38,49 @@
               </div>
 
             </div>
-          </div>
-        </div>
+        </app-card>
 
         <!-- ── Request parameters card ─────────────────────────── -->
-        <div class="card mb-3">
-          <div class="card-header">Request Parameters</div>
-          <div class="card-body">
-            <div class="row g-3">
+        <app-card title="Request Parameters" class="mb-3">
+          <div class="row g-3">
 
-              <div class="col-12">
-                <input-group v-model="form.scopes" label="Scopes" placeholder="openid profile email" hint="Space-separated list of requested scopes." />
-              </div>
-
-              <div class="col-md-6">
-                <input-group v-model="form.acrValues" label="ACR Values" placeholder="urn:mace:incommon:iap:silver" hint="Space-separated list of requested Authentication Context Class References." />
-              </div>
-
-              <div class="col-md-6">
-                <input-group v-model="form.loginHint" label="Login Hint" placeholder="user@example.com" hint="Pre-fill the username/email on the login page." />
-              </div>
-
-              <div class="col-12">
-                <div class="d-flex align-items-center gap-2">
-                  <div class="form-check form-switch mb-0">
-                    <input v-model="form.pkce" class="form-check-input" type="checkbox" id="pkceToggle" />
-                    <label class="form-check-label" for="pkceToggle">Use PKCE (Proof Key for Code Exchange)</label>
-                  </div>
-                  <span v-if="form.pkce" class="badge-pkce">S256</span>
-                </div>
-                <div class="form-text mt-1">Adds <code>code_challenge</code> and <code>code_challenge_method=S256</code> to the request.</div>
-              </div>
-
+            <div class="col-12">
+              <input-group v-model="form.scopes" label="Scopes" placeholder="openid profile email" hint="Space-separated list of requested scopes." />
             </div>
+
+            <div class="col-md-6">
+              <input-group v-model="form.acrValues" label="ACR Values" placeholder="urn:mace:incommon:iap:silver" hint="Space-separated list of requested Authentication Context Class References." />
+            </div>
+
+            <div class="col-md-6">
+              <input-group v-model="form.loginHint" label="Login Hint" placeholder="user@example.com" hint="Pre-fill the username/email on the login page." />
+            </div>
+
+            <div class="col-12">
+              <div class="d-flex align-items-center gap-2">
+                <div class="form-check form-switch mb-0">
+                  <input v-model="form.pkce" class="form-check-input" type="checkbox" id="pkceToggle" />
+                  <label class="form-check-label" for="pkceToggle">Use PKCE (Proof Key for Code Exchange)</label>
+                </div>
+                <span v-if="form.pkce" class="badge-pkce">S256</span>
+              </div>
+              <div class="form-text mt-1">Adds <code>code_challenge</code> and <code>code_challenge_method=S256</code> to the request.</div>
+            </div>
+
           </div>
-        </div>
+        </app-card>
 
         <!-- ── Authorization URL preview ──────────────────────── -->
-        <div class="card mb-4">
-          <div class="card-header d-flex align-items-center justify-content-between">
+        <app-card class="mb-4" header-class="d-flex align-items-center justify-content-between" body-class="p-0">
+          <template #header>
             Authorization URL
             <button class="btn btn-sm btn-default" title="Copy URL" @click="copyUrl">
               <i class="bi" :class="urlCopied ? 'bi-check-lg' : 'bi-clipboard'"></i>
               {{ urlCopied ? 'Copied' : 'Copy' }}
             </button>
-          </div>
-          <div class="card-body p-0">
-            <pre class="auth-url-preview">{{ authorizationUrl }}</pre>
-          </div>
-        </div>
+          </template>
+          <pre class="auth-url-preview">{{ authorizationUrl }}</pre>
+        </app-card>
 
         <!-- ── Start button ────────────────────────────────────── -->
         <div class="mb-5">
@@ -120,16 +112,13 @@
             <token-viewer label="Refresh Token" :token="flowResult.refresh_token" />
           </div>
 
-          <div v-if="flowResult.expires_in || flowResult.token_type || flowResult.scope" class="card mb-4">
-            <div class="card-header">Token Metadata</div>
-            <div class="card-body">
-              <table class="meta-table">
-                <tr v-if="flowResult.token_type"><td>token_type</td><td><code>{{ flowResult.token_type }}</code></td></tr>
-                <tr v-if="flowResult.expires_in"><td>expires_in</td><td><code>{{ flowResult.expires_in }}s</code></td></tr>
-                <tr v-if="flowResult.scope"><td>scope</td><td><code>{{ flowResult.scope }}</code></td></tr>
-              </table>
-            </div>
-          </div>
+          <app-card v-if="flowResult.expires_in || flowResult.token_type || flowResult.scope" title="Token Metadata" class="mb-4">
+            <table class="meta-table">
+              <tr v-if="flowResult.token_type"><td>token_type</td><td><code>{{ flowResult.token_type }}</code></td></tr>
+              <tr v-if="flowResult.expires_in"><td>expires_in</td><td><code>{{ flowResult.expires_in }}s</code></td></tr>
+              <tr v-if="flowResult.scope"><td>scope</td><td><code>{{ flowResult.scope }}</code></td></tr>
+            </table>
+          </app-card>
 
         </template>
 
@@ -143,6 +132,7 @@ import { defineComponent } from 'vue'
 import PageTemplate from '../components/layout/PageTemplate.vue'
 import TokenViewer from '../components/ui/TokenViewer.vue'
 import InputGroup from '../components/ui/InputGroup.vue'
+import AppCard from '../components/ui/AppCard.vue'
 import { useProvidersStore } from '../components/stores/providers'
 import type { OPRecord } from '../components/stores/providers'
 
@@ -213,7 +203,7 @@ function formatAuthUrlForDisplay(endpoint: string, params: Array<[string, string
 
 export default defineComponent({
   name: 'AuthCodeFlowPage',
-  components: { PageTemplate, TokenViewer, InputGroup },
+  components: { PageTemplate, TokenViewer, InputGroup, AppCard },
 
   setup() {
     return { providers: useProvidersStore() }

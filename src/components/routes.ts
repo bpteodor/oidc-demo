@@ -4,6 +4,7 @@ import ErrorPage from '../views/ErrorPage.vue'
 import OauthCallback from "../views/OauthCallback.vue";
 import ConfigPage from "../views/ConfigPage.vue";
 import AuthCodeFlowPage from "../views/AuthCodeFlowPage.vue";
+import ClientCredentialsPage from "../views/ClientCredentialsPage.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,6 +12,7 @@ const router = createRouter({
         {path: '/', component: HomePage,},
         {path: '/config', component: ConfigPage},
         {path: '/authorization-code', component: AuthCodeFlowPage},
+        {path: '/client-credentials', component: ClientCredentialsPage},
         {path: '/oauth-callback', component: OauthCallback},
         {path: '/error', component: ErrorPage},
     ]

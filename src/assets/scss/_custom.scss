@@ -1,5 +1,7 @@
 // ── LIGHT theme ────────────────────────────────────────────────────────────
-:root,
+:root {
+    --hdr-height:          5rem;
+}
 [data-theme="light"] {
   // surfaces
   --c-bg-base:       #f0f4f8;
@@ -40,7 +42,6 @@
   --hdr-muted:           #64748b;
   --hdr-surface:         #f1f5f9;
   --hdr-surface-h:       #e2e8f0;
-  --hdr-height:          56px;
   --hdr-btn-add-text:    #ffffff;
   --hdr-icon-glow:       rgba(37, 99, 235, 0.35);
   --hdr-connected-border:rgba(37, 99, 235, 0.35);
@@ -89,7 +90,6 @@
   --hdr-muted:           #94a3b8;
   --hdr-surface:         #1a2538;
   --hdr-surface-h:       #1f2e45;
-  --hdr-height:          56px;
   --hdr-btn-add-text:    #0c1120;
   --hdr-icon-glow:       rgba(22, 201, 154, 0.45);
   --hdr-connected-border:rgba(22, 201, 154, 0.35);

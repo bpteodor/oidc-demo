@@ -1,4 +1,5 @@
 import {createApp} from 'vue'
+import {createPinia} from 'pinia'
 import axios from "axios"
 import router from './services/routes'
 
@@ -16,6 +17,7 @@ axios.defaults.timeout = window.APP_CONFIG.axios.defaults.timout
 
 // initialize app
 export const app = createApp(App)
+    .use(createPinia())
     .use(router)
     .mount('#app')
 

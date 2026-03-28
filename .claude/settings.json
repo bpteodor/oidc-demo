@@ -5,7 +5,9 @@
       "Bash(npx -y npm-check-updates --format group)",
       "Bash(npm install:*)",
       "Bash(npm config:*)",
-      "Bash(npm audit:*)"
+      "Bash(npm audit:*)",
+      "Bash(grep -r \"vue-i18n\\\\|i18n\\\\|useI18n\\\\|$t\\\\|createI18n\" /home/teo/dev/src/my/oidc-demo/src --include=\"*.ts\" --include=\"*.vue\" -i)",
+      "Bash(npm run:*)"
     ]
   }
 }

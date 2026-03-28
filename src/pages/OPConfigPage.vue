@@ -1,4 +1,5 @@
 <template>
+  <page-template>
   <div id="op-config" class="container container-md page">
 
     <h1 class="title">{{ isNew ? 'New OpenID Provider' : 'Edit OpenID Provider' }}</h1>
@@ -106,12 +107,14 @@
     </div>
 
   </div>
+  </page-template>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue'
 import axios from 'axios'
 import {useProvidersStore} from '../stores/providers'
+import PageTemplate from '../components/ui/PageTemplate.vue'
 
 interface OPForm {
   name: string
@@ -141,6 +144,7 @@ function emptyForm(): OPForm {
 
 export default defineComponent({
   name: 'OPConfigPage',
+  components: { PageTemplate },
 
   setup() {
     return {providers: useProvidersStore()}

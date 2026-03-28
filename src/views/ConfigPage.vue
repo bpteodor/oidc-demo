@@ -53,12 +53,7 @@
           <div class="card mb-4">
             <div class="card-header">Configuration</div>
             <div class="card-body">
-              <div class="mb-3">
-                <label for="opName" class="form-label">Name <span class="text-danger">*</span></label>
-                <input id="opName" v-model="form.name" type="text" class="form-control" :class="{ 'is-invalid': errors.name }" placeholder="My Provider" />
-                <div v-if="errors.name" class="invalid-feedback">{{ errors.name }}</div>
-                <div class="form-text">A short label to identify this provider.</div>
-              </div>
+              <input-group id="opName" v-model="form.name" label="Name" required placeholder="My Provider" :error="errors.name" hint="A short label to identify this provider." />
             </div>
           </div>
 
@@ -94,50 +89,14 @@
 
               <template v-if="showManual || discoveryLoaded">
 
-                <div class="mb-3">
-                  <label for="issuer" class="form-label">Issuer <span class="text-danger">*</span></label>
-                  <input id="issuer" v-model="form.issuer" type="url" class="form-control" :class="{ 'is-invalid': errors.issuer }" placeholder="https://example.com" />
-                  <div v-if="errors.issuer" class="invalid-feedback">{{ errors.issuer }}</div>
-                </div>
-
-                <div class="mb-3">
-                  <label for="authorizationEndpoint" class="form-label">Authorization Endpoint <span class="text-danger">*</span></label>
-                  <input id="authorizationEndpoint" v-model="form.authorizationEndpoint" type="url" class="form-control" :class="{ 'is-invalid': errors.authorizationEndpoint }" />
-                  <div v-if="errors.authorizationEndpoint" class="invalid-feedback">{{ errors.authorizationEndpoint }}</div>
-                </div>
-
-                <div class="mb-3">
-                  <label for="tokenEndpoint" class="form-label">Token Endpoint <span class="text-danger">*</span></label>
-                  <input id="tokenEndpoint" v-model="form.tokenEndpoint" type="url" class="form-control" :class="{ 'is-invalid': errors.tokenEndpoint }" />
-                  <div v-if="errors.tokenEndpoint" class="invalid-feedback">{{ errors.tokenEndpoint }}</div>
-                </div>
-
-                <div class="mb-3">
-                  <label for="userinfoEndpoint" class="form-label">UserInfo Endpoint</label>
-                  <input id="userinfoEndpoint" v-model="form.userinfoEndpoint" type="url" class="form-control" />
-                </div>
-
-                <div class="mb-3">
-                  <label for="jwksUri" class="form-label">JWKS URI <span class="text-danger">*</span></label>
-                  <input id="jwksUri" v-model="form.jwksUri" type="url" class="form-control" :class="{ 'is-invalid': errors.jwksUri }" />
-                  <div v-if="errors.jwksUri" class="invalid-feedback">{{ errors.jwksUri }}</div>
-                </div>
-
-                <div class="mb-3">
-                  <label for="endSessionEndpoint" class="form-label">End Session Endpoint</label>
-                  <input id="endSessionEndpoint" v-model="form.endSessionEndpoint" type="url" class="form-control" />
-                </div>
-
-                <div class="mb-3">
-                  <label for="introspectionEndpoint" class="form-label">Introspection Endpoint</label>
-                  <input id="introspectionEndpoint" v-model="form.introspectionEndpoint" type="url" class="form-control" />
-                </div>
-
-                <div class="mb-3">
-                  <label for="scopesSupported" class="form-label">Scopes Supported</label>
-                  <input id="scopesSupported" v-model="form.scopesSupported" type="text" class="form-control" placeholder="openid profile email" />
-                  <div class="form-text">Space-separated list of supported scopes.</div>
-                </div>
+                <input-group id="issuer" v-model="form.issuer" type="url" label="Issuer" required placeholder="https://example.com" :error="errors.issuer" />
+                <input-group id="authorizationEndpoint" v-model="form.authorizationEndpoint" type="url" label="Authorization Endpoint" required :error="errors.authorizationEndpoint" />
+                <input-group id="tokenEndpoint" v-model="form.tokenEndpoint" type="url" label="Token Endpoint" required :error="errors.tokenEndpoint" />
+                <input-group id="userinfoEndpoint" v-model="form.userinfoEndpoint" type="url" label="UserInfo Endpoint" />
+                <input-group id="jwksUri" v-model="form.jwksUri" type="url" label="JWKS URI" required :error="errors.jwksUri" />
+                <input-group id="endSessionEndpoint" v-model="form.endSessionEndpoint" type="url" label="End Session Endpoint" />
+                <input-group id="introspectionEndpoint" v-model="form.introspectionEndpoint" type="url" label="Introspection Endpoint" />
+                <input-group id="scopesSupported" v-model="form.scopesSupported" label="Scopes Supported" placeholder="openid profile email" hint="Space-separated list of supported scopes." />
 
               </template>
             </div>
@@ -162,6 +121,7 @@ import { defineComponent } from 'vue'
 import axios from 'axios'
 import { useProvidersStore } from '../components/stores/providers'
 import PageTemplate from '../components/layout/PageTemplate.vue'
+import InputGroup from '../components/ui/InputGroup.vue'
 
 interface OPForm {
   name: string
@@ -191,7 +151,7 @@ function emptyForm(): OPForm {
 
 export default defineComponent({
   name: 'ConfigPage',
-  components: { PageTemplate },
+  components: { PageTemplate, InputGroup },
 
   setup() {
     return { providers: useProvidersStore() }

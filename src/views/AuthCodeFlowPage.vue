@@ -19,13 +19,11 @@
             <div class="row g-3">
 
               <div class="col-md-6">
-                <label class="form-label">Client ID <span class="text-danger">*</span></label>
-                <input v-model="form.clientId" type="text" class="form-control" placeholder="my-client" />
+                <input-group v-model="form.clientId" label="Client ID" required placeholder="my-client" />
               </div>
 
               <div class="col-md-6">
-                <label class="form-label">Client Secret</label>
-                <input v-model="form.clientSecret" type="password" class="form-control" placeholder="(leave empty for public client)" autocomplete="off" />
+                <input-group v-model="form.clientSecret" type="password" label="Client Secret" placeholder="(leave empty for public client)" autocomplete="off" />
               </div>
 
               <div class="col-md-6">
@@ -38,8 +36,7 @@
               </div>
 
               <div class="col-md-6">
-                <label class="form-label">Redirect URI</label>
-                <input v-model="form.redirectUri" type="url" class="form-control" />
+                <input-group v-model="form.redirectUri" type="url" label="Redirect URI" />
               </div>
 
             </div>
@@ -53,21 +50,15 @@
             <div class="row g-3">
 
               <div class="col-12">
-                <label class="form-label">Scopes</label>
-                <input v-model="form.scopes" type="text" class="form-control" placeholder="openid profile email" />
-                <div class="form-text">Space-separated list of requested scopes.</div>
+                <input-group v-model="form.scopes" label="Scopes" placeholder="openid profile email" hint="Space-separated list of requested scopes." />
               </div>
 
               <div class="col-md-6">
-                <label class="form-label">ACR Values</label>
-                <input v-model="form.acrValues" type="text" class="form-control" placeholder="urn:mace:incommon:iap:silver" />
-                <div class="form-text">Space-separated list of requested Authentication Context Class References.</div>
+                <input-group v-model="form.acrValues" label="ACR Values" placeholder="urn:mace:incommon:iap:silver" hint="Space-separated list of requested Authentication Context Class References." />
               </div>
 
               <div class="col-md-6">
-                <label class="form-label">Login Hint</label>
-                <input v-model="form.loginHint" type="text" class="form-control" placeholder="user@example.com" />
-                <div class="form-text">Pre-fill the username/email on the login page.</div>
+                <input-group v-model="form.loginHint" label="Login Hint" placeholder="user@example.com" hint="Pre-fill the username/email on the login page." />
               </div>
 
               <div class="col-12">
@@ -151,6 +142,7 @@
 import { defineComponent } from 'vue'
 import PageTemplate from '../components/layout/PageTemplate.vue'
 import TokenViewer from '../components/ui/TokenViewer.vue'
+import InputGroup from '../components/ui/InputGroup.vue'
 import { useProvidersStore } from '../components/stores/providers'
 import type { OPRecord } from '../components/stores/providers'
 
@@ -221,7 +213,7 @@ function formatAuthUrlForDisplay(endpoint: string, params: Array<[string, string
 
 export default defineComponent({
   name: 'AuthCodeFlowPage',
-  components: { PageTemplate, TokenViewer },
+  components: { PageTemplate, TokenViewer, InputGroup },
 
   setup() {
     return { providers: useProvidersStore() }

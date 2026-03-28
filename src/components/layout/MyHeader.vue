@@ -5,7 +5,7 @@
 
         <!-- Brand -->
         <a class="app-brand" href="/">
-          <i class="bi bi-shield-fill app-brand__icon"></i>
+          <img src="/favicon-32x32.png" height="32px"/>
           <span class="app-brand__name">OIDC Demo</span>
         </a>
 
@@ -37,7 +37,6 @@
 </template>
 
 <script lang="ts">
-import {userManager} from '../oidc'
 import {defineComponent} from "vue";
 import {User} from "oidc-client-ts";
 import {useProvidersStore} from '../stores/providers'
@@ -80,7 +79,7 @@ export default defineComponent({
       }
     },
     logout: function () {
-      userManager.signoutRedirect()
+      //userManager.signoutRedirect()
       return false
     },
     roleDisplayNames: (role: string | unknown) => {
@@ -93,8 +92,8 @@ export default defineComponent({
     }
   },
   mounted() {
-    userManager.getUser().then((u) => { this.updateUserData(u) })
-    userManager.events.addUserLoaded(this.updateUserData)
+    //userManager.getUser().then((u) => { this.updateUserData(u) })
+    //userManager.events.addUserLoaded(this.updateUserData)
   },
 })
 </script>

@@ -12,7 +12,6 @@
 </template>
 
 <script lang="ts">
-import { userManager } from '../components/oidc'
 import { defineComponent } from 'vue'
 import axios from 'axios'
 import MyOverlay from '../components/ui/MyOverlay.vue'
@@ -124,17 +123,6 @@ export default defineComponent({
         this.err = 'Corrupted flow configuration in storage.'
         this.done = true
       }
-    } else {
-      // Default userManager-based flow
-      userManager.signinRedirectCallback().then((user) => {
-        window.tokenChecked = true
-        const _goto = user.state as string
-        console.log(`[callback] welcome ${user.profile.given_name}, redirecting to ${_goto || '/'}`)
-        this.$router.push(_goto || '/')
-      }).catch((oauth_error) => {
-        this.err = String(oauth_error)
-        this.done = true
-      })
     }
   },
 })

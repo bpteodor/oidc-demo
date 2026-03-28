@@ -104,6 +104,42 @@ body {
   transition: background-color 0.2s, color 0.2s;
 }
 
+/*
+Source - https://stackoverflow.com/a/27985504
+Retrieved 2026-03-28, License - CC BY-SA 3.0
+*/
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing:    border-box;
+  box-sizing:         border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 4rem;
+  min-height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+
+footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+
 // ── Bootstrap component overrides (use CSS vars so both themes work) ────────
 
 // cards

@@ -1,7 +1,7 @@
 import {createApp} from 'vue'
 import {createPinia} from 'pinia'
 import axios from "axios"
-import router from './services/routes'
+import router from './components/routes'
 
 import App from './App.vue'
 import './assets/scss/application.scss'

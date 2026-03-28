@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import {userManager} from '../../services/oidc'
+import {userManager} from '../oidc'
 import {defineComponent} from "vue";
 import {User} from "oidc-client-ts";
 import {useProvidersStore} from '../stores/providers'

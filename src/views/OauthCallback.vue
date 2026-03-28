@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import {userManager} from '../services/oidc'
+import {userManager} from '../components/oidc'
 import {defineComponent} from "vue";
 import MyOverlay from "../components/ui/MyOverlay.vue";
 

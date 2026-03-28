@@ -1,6 +1,6 @@
 <template>
   <page-template>
-    <div class="ac-page page container">
+    <div class="ac-page page container" @click="showClientDropdown = false">
       <h1 class="title">Authorization Code Flow</h1>
 
       <!-- No provider selected -->
@@ -12,41 +12,63 @@
 
       <template v-else>
 
-        <!-- ── Configuration card ──────────────────────────────── -->
+        <!-- ── Client card ─────────────────────────────────────── -->
         <app-card title="Client" class="mb-3">
           <div class="row g-3">
 
-              <div class="col-md-6">
-                <input-group v-model="form.clientId" label="Client ID" required placeholder="my-client" />
+            <!-- Client ID + pre-configured client picker -->
+            <div class="col-md-6">
+              <label class="form-label">Client ID <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input v-model="form.clientId" type="text" class="form-control" placeholder="my-client" required />
+                <div v-if="provider.clients && provider.clients.length" class="dropdown">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                    title="Select pre-configured client"
+                    @click.stop="showClientDropdown = !showClientDropdown"
+                  ></button>
+                  <ul class="dropdown-menu dropdown-menu-end" :class="{ show: showClientDropdown }">
+                    <li><h6 class="dropdown-header">Pre-configured clients</h6></li>
+                    <li v-for="client in provider.clients" :key="client.id">
+                      <button type="button" class="dropdown-item" @click.stop="selectClient(client)">
+                        <span class="fw-semibold">{{ client.clientId }}</span>
+                        <span v-if="client.scopes" class="ms-2 text-muted small">{{ client.scopes }}</span>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </div>
-
-              <div class="col-md-6">
-                <input-group v-model="form.clientSecret" type="password" label="Client Secret" placeholder="(leave empty for public client)" autocomplete="off" />
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label">Token Endpoint Auth Method</label>
-                <select v-model="form.tokenEndpointAuthMethod" class="form-select">
-                  <option value="client_secret_basic">client_secret_basic — HTTP Basic</option>
-                  <option value="client_secret_post">client_secret_post — POST body</option>
-                  <option value="none">none — public client</option>
-                </select>
-              </div>
-
-              <div class="col-md-6">
-                <input-group v-model="form.redirectUri" type="url" label="Redirect URI" />
-              </div>
-
             </div>
+
+            <div class="col-md-6">
+              <input-group v-model="form.clientSecret" type="password" label="Client Secret" placeholder="(leave empty for public client)" autocomplete="off" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Token Endpoint Auth Method</label>
+              <select v-model="form.tokenEndpointAuthMethod" class="form-select">
+                <option value="client_secret_basic">client_secret_basic — HTTP Basic</option>
+                <option value="client_secret_post">client_secret_post — POST body</option>
+                <option value="none">none — public client</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Redirect URI</label>
+              <input :value="form.redirectUri" type="url" class="form-control" readonly />
+            </div>
+
+            <div class="col-12">
+              <input-group v-model="form.scopes" label="Scopes" placeholder="openid profile email" hint="Space-separated list of requested scopes." />
+            </div>
+
+          </div>
         </app-card>
 
         <!-- ── Request parameters card ─────────────────────────── -->
         <app-card title="Request Parameters" class="mb-3">
           <div class="row g-3">
-
-            <div class="col-12">
-              <input-group v-model="form.scopes" label="Scopes" placeholder="openid profile email" hint="Space-separated list of requested scopes." />
-            </div>
 
             <div class="col-md-6">
               <input-group v-model="form.acrValues" label="ACR Values" placeholder="urn:mace:incommon:iap:silver" hint="Space-separated list of requested Authentication Context Class References." />
@@ -56,15 +78,62 @@
               <input-group v-model="form.loginHint" label="Login Hint" placeholder="user@example.com" hint="Pre-fill the username/email on the login page." />
             </div>
 
+            <!-- PKCE toggle -->
             <div class="col-12">
-              <div class="d-flex align-items-center gap-2">
+              <div class="d-flex align-items-center gap-2 mb-1">
                 <div class="form-check form-switch mb-0">
                   <input v-model="form.pkce" class="form-check-input" type="checkbox" id="pkceToggle" />
                   <label class="form-check-label" for="pkceToggle">Use PKCE (Proof Key for Code Exchange)</label>
                 </div>
                 <span v-if="form.pkce" class="badge-pkce">S256</span>
               </div>
-              <div class="form-text mt-1">Adds <code>code_challenge</code> and <code>code_challenge_method=S256</code> to the request.</div>
+              <div class="form-text">Adds <code>code_challenge</code> and <code>code_challenge_method=S256</code> to the request.</div>
+            </div>
+
+            <!-- PKCE parameter fields -->
+            <template v-if="form.pkce">
+              <div class="col-12">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <span class="form-label mb-0 fw-semibold">PKCE Parameters</span>
+                  <button type="button" class="btn btn-sm btn-default" @click="generatePkce" title="Regenerate PKCE values">
+                    <i class="bi bi-arrow-clockwise me-1"></i>Regenerate
+                  </button>
+                </div>
+                <div class="row g-2">
+                  <div class="col-12">
+                    <label class="form-label small text-muted mb-1">code_verifier</label>
+                    <div class="input-group input-group-sm">
+                      <input :value="pkceParams.codeVerifier" type="text" class="form-control font-monospace pkce-value" readonly />
+                      <button type="button" class="btn btn-outline-secondary" title="Copy" @click="copyText(pkceParams.codeVerifier)">
+                        <i class="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label small text-muted mb-1">code_challenge <span class="badge-pkce ms-1">S256</span></label>
+                    <div class="input-group input-group-sm">
+                      <input :value="pkceParams.codeChallenge" type="text" class="form-control font-monospace pkce-value" readonly />
+                      <button type="button" class="btn btn-outline-secondary" title="Copy" @click="copyText(pkceParams.codeChallenge)">
+                        <i class="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <!-- State -->
+            <div class="col-md-6">
+              <label class="form-label">State</label>
+              <input v-model="form.state" type="text" class="form-control font-monospace" placeholder="(leave empty to omit)" />
+              <div class="form-text">CSRF protection. Clear to omit from the request.</div>
+            </div>
+
+            <!-- Nonce -->
+            <div class="col-md-6">
+              <label class="form-label">Nonce</label>
+              <input v-model="form.nonce" type="text" class="form-control font-monospace" placeholder="(leave empty to omit)" />
+              <div class="form-text">Replay-attack protection. Clear to omit from the request.</div>
             </div>
 
           </div>
@@ -134,7 +203,7 @@ import TokenViewer from '../components/ui/TokenViewer.vue'
 import InputGroup from '../components/ui/InputGroup.vue'
 import AppCard from '../components/ui/AppCard.vue'
 import { useProvidersStore } from '../components/stores/providers'
-import type { OPRecord } from '../components/stores/providers'
+import type { OPRecord, ClientRecord } from '../components/stores/providers'
 
 export interface AcFlowConfig {
   providerId: string
@@ -224,7 +293,14 @@ export default defineComponent({
         acrValues: '',
         loginHint: '',
         pkce: true,
+        state: '',
+        nonce: '',
       },
+      pkceParams: {
+        codeVerifier: '',
+        codeChallenge: '',
+      },
+      showClientDropdown: false,
       urlCopied: false,
       flowResult: null as AcFlowResult | null,
     }
@@ -247,16 +323,16 @@ export default defineComponent({
         ['scope', this.form.scopes || 'openid'],
       ]
 
-      if (this.form.loginHint)  params.push(['login_hint', this.form.loginHint])
-      if (this.form.acrValues)  params.push(['acr_values', this.form.acrValues])
+      if (this.form.loginHint) params.push(['login_hint', this.form.loginHint])
+      if (this.form.acrValues) params.push(['acr_values', this.form.acrValues])
 
       if (this.form.pkce) {
-        params.push(['code_challenge', '<code_challenge>'])
+        params.push(['code_challenge', this.pkceParams.codeChallenge || '<code_challenge>'])
         params.push(['code_challenge_method', 'S256'])
       }
 
-      params.push(['state', '<state>'])
-      params.push(['nonce', '<nonce>'])
+      if (this.form.state) params.push(['state', this.form.state])
+      if (this.form.nonce) params.push(['nonce', this.form.nonce])
 
       return formatAuthUrlForDisplay(this.provider.authorizationEndpoint, params)
     },
@@ -267,6 +343,24 @@ export default defineComponent({
   },
 
   methods: {
+    async generatePkce() {
+      const codeVerifier = randomBase64Url(32)
+      const codeChallenge = await sha256Base64Url(codeVerifier)
+      this.pkceParams.codeVerifier = codeVerifier
+      this.pkceParams.codeChallenge = codeChallenge
+    },
+
+    selectClient(client: ClientRecord) {
+      this.form.clientId = client.clientId
+      this.form.clientSecret = client.clientSecret
+      this.form.scopes = client.scopes
+      this.showClientDropdown = false
+    },
+
+    async copyText(text: string) {
+      await navigator.clipboard.writeText(text)
+    },
+
     async copyUrl() {
       const url = this.authorizationUrl.replace(/\n\s*/g, '')
       await navigator.clipboard.writeText(url)
@@ -276,17 +370,6 @@ export default defineComponent({
 
     async startFlow() {
       if (!this.provider || !this.form.clientId) return
-
-      const state = randomBase64Url(16)
-      const nonce = randomBase64Url(16)
-
-      let codeVerifier = ''
-      let codeChallenge = ''
-
-      if (this.form.pkce) {
-        codeVerifier = randomBase64Url(32)
-        codeChallenge = await sha256Base64Url(codeVerifier)
-      }
 
       // Persist flow config for the callback page
       const config: AcFlowConfig = {
@@ -303,7 +386,11 @@ export default defineComponent({
         redirectUri: this.form.redirectUri,
       }
 
-      const pkce: AcFlowPkce = { codeVerifier, state, nonce }
+      const pkce: AcFlowPkce = {
+        codeVerifier: this.form.pkce ? this.pkceParams.codeVerifier : '',
+        state: this.form.state,
+        nonce: this.form.nonce,
+      }
 
       sessionStorage.setItem(STORAGE_CONFIG, JSON.stringify(config))
       sessionStorage.setItem(STORAGE_PKCE, JSON.stringify(pkce))
@@ -316,11 +403,16 @@ export default defineComponent({
         ['scope', this.form.scopes || 'openid'],
       ]
 
-      if (this.form.loginHint)  params.push(['login_hint', this.form.loginHint])
-      if (this.form.acrValues)  params.push(['acr_values', this.form.acrValues])
-      if (this.form.pkce)       params.push(['code_challenge', codeChallenge], ['code_challenge_method', 'S256'])
+      if (this.form.loginHint) params.push(['login_hint', this.form.loginHint])
+      if (this.form.acrValues) params.push(['acr_values', this.form.acrValues])
 
-      params.push(['state', state], ['nonce', nonce])
+      if (this.form.pkce) {
+        params.push(['code_challenge', this.pkceParams.codeChallenge])
+        params.push(['code_challenge_method', 'S256'])
+      }
+
+      if (this.form.state) params.push(['state', this.form.state])
+      if (this.form.nonce) params.push(['nonce', this.form.nonce])
 
       window.location.href = buildAuthUrl(this.provider.authorizationEndpoint, params)
     },
@@ -331,7 +423,12 @@ export default defineComponent({
     },
   },
 
-  mounted() {
+  async mounted() {
+    // Pre-generate PKCE params and state/nonce
+    await this.generatePkce()
+    //this.form.state = randomBase64Url(16)
+    //this.form.nonce = randomBase64Url(16)
+
     // Pick up token result stored by OauthCallback after the flow completes
     const raw = sessionStorage.getItem(STORAGE_RESULT)
     if (raw) {
@@ -377,6 +474,10 @@ export default defineComponent({
   background: var(--c-accent-muted);
   color: var(--c-accent);
   border: 1px solid var(--c-accent);
+}
+
+.pkce-value {
+  font-size: 0.78rem;
 }
 
 .section-divider {

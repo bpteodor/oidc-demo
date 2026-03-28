@@ -68,7 +68,7 @@ export default defineComponent({
 
       const pkce: AcFlowPkce = JSON.parse(rawPkce)
 
-      if (returnedState !== pkce.state) {
+      if (pkce.state && returnedState !== pkce.state) {
         this.err = 'State parameter mismatch — possible CSRF attack. Request rejected.'
         this.done = true
         return

@@ -51,8 +51,27 @@
 
           <!-- Discovery -->
           <div class="card mb-4">
-            <div class="card-header">Discovery</div>
+            <div class="card-header">Configuration</div>
             <div class="card-body">
+              <div class="mb-3">
+                <label for="opName" class="form-label">Name <span class="text-danger">*</span></label>
+                <input id="opName" v-model="form.name" type="text" class="form-control" :class="{ 'is-invalid': errors.name }" placeholder="My Provider" />
+                <div v-if="errors.name" class="invalid-feedback">{{ errors.name }}</div>
+                <div class="form-text">A short label to identify this provider.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Configuration -->
+          <div class="card mb-4">
+            <div class="card-header">
+              Discovery
+              <button v-if="!showManual" class="btn btn-sm btn-default float-end" type="button" @click="showManual = true">
+                Enter manually
+              </button>
+            </div>
+            <div class="card-body">
+
               <div class="mb-3">
                 <label for="discoveryUrl" class="form-label">Discovery URL</label>
                 <div class="input-group">
@@ -71,25 +90,6 @@
                 </div>
                 <div v-if="discoveryError" class="validation-error mt-1">{{ discoveryError }}</div>
                 <div class="form-text">Enter the OpenID Connect discovery URL to auto-fill the configuration below.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Configuration -->
-          <div class="card mb-4">
-            <div class="card-header">
-              Configuration
-              <button v-if="!showManual" class="btn btn-sm btn-default float-end" type="button" @click="showManual = true">
-                Enter manually
-              </button>
-            </div>
-            <div class="card-body">
-
-              <div class="mb-3">
-                <label for="opName" class="form-label">Name <span class="text-danger">*</span></label>
-                <input id="opName" v-model="form.name" type="text" class="form-control" :class="{ 'is-invalid': errors.name }" placeholder="My Provider" />
-                <div v-if="errors.name" class="invalid-feedback">{{ errors.name }}</div>
-                <div class="form-text">A short label to identify this provider.</div>
               </div>
 
               <template v-if="showManual || discoveryLoaded">

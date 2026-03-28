@@ -16,17 +16,17 @@
   --c-border-light:  #cbd5e1;
 
   // accent — blue
-  --c-accent:        #2563eb;
-  --c-accent-hover:  #1d4ed8;
+  --c-accent:        #004AC6;
+  --c-accent-hover:  #E8EEF6;
   --c-accent-muted:  rgba(37, 99, 235, 0.1);
   --c-accent-shadow: rgba(37, 99, 235, 0.25);
 
   // text
   --c-text-primary:  #0f172a;
-  --c-text-secondary:#475569;
+  --c-text-secondary:#434655;
   --c-text-muted:    #94a3b8;
-  --c-text-link:     #2563eb;
-  --c-text-label:    #2563eb;
+  --c-text-link:     #004AC6;
+  --c-text-label:    #004AC6;
 
   // status
   --c-success:       #16a34a;
@@ -36,7 +36,7 @@
   // header tokens
   --hdr-bg:              #ffffff;
   --hdr-border:          #e2e8f0;
-  --hdr-accent:          #2563eb;
+  --hdr-accent:          #004AC6;
   --hdr-accent-h:        #1d4ed8;
   --hdr-text:            #0f172a;
   --hdr-muted:           #64748b;
@@ -119,12 +119,14 @@ Retrieved 2026-03-28, License - CC BY-SA 3.0
 
 html {
   height: 100%;
+  font-family: "Public Sans", sans-serif;
+  font-size: 14px;
 }
 
 body {
   margin: 0;
   min-height: 100%;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
 }
 
 

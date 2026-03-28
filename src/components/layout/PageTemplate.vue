@@ -7,13 +7,8 @@
         <slot name="sidebar-top" />
 
         <nav class="sidebar-nav">
-          <router-link
-            v-for="item in menuItems"
-            :key="item.label"
-            :to="item.path"
-            class="sidebar-nav__item"
-            :class="{ 'sidebar-nav__item--active': isActive(item) }"
-          >
+          <router-link v-for="item in menuItems" :key="item.label" :to="item.path" class="sidebar-nav__item"
+            :class="{ 'sidebar-nav__item--active': isActive(item) }">
             <i v-if="item.icon" :class="['sidebar-nav__icon', item.icon]" />
             <span class="sidebar-nav__label">{{ item.label }}</span>
           </router-link>
@@ -47,11 +42,11 @@ export interface MenuItem {
 }
 
 const DEFAULT_MENU_ITEMS: MenuItem[] = [
-  { label: 'Configuration',  path: '/',        icon: 'bi bi-grid-3x3-gap',       exact: true },
-  { label: 'Auth Code Flow', path: '/',        icon: 'bi bi-lock',        exact: true },
-  { label: 'Client Credentials', path: '/',   icon: 'bi bi-key',         exact: true },
-  { label: 'UserInfo',       path: '/',        icon: 'bi bi-person-badge', exact: true },
-  { label: 'Introspection',  path: '/',        icon: 'bi bi-search',      exact: true },
+  { label: 'Configuration', path: '/', icon: 'bi bi-grid-3x3-gap', exact: true },
+  { label: 'Auth Code Flow', path: '/authorization-code', icon: 'bi bi-lock', exact: true },
+  { label: 'Client Credentials', path: '/client-credentials', icon: 'bi bi-key', exact: true },
+  { label: 'UserInfo', path: '/user-info', icon: 'bi bi-person-badge', exact: true },
+  { label: 'Introspection', path: '/token-info', icon: 'bi bi-search', exact: true },
 ]
 
 export default defineComponent({
@@ -96,7 +91,7 @@ export default defineComponent({
 
 /* ── sidebar ──────────────────────────────────────────────────── */
 .page-sidebar {
-  width: 220px;
+  width: 256px;
   flex-shrink: 0;
   background: var(--c-bg-sidebar);
   border-right: 1px solid var(--c-border);
@@ -110,7 +105,7 @@ export default defineComponent({
 
 /* ── sidebar nav ──────────────────────────────────────────────── */
 .sidebar-nav {
-  padding: 0.75rem 0;
+  padding: 32px 24px;
   flex: 1;
 }
 
@@ -123,7 +118,7 @@ export default defineComponent({
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
-  border-left: 3px solid transparent;
+  border-right: 4px solid transparent;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
@@ -134,7 +129,7 @@ export default defineComponent({
 
 .sidebar-nav__item--active {
   color: var(--c-accent);
-  border-left-color: var(--c-accent);
+  border-right-color: var(--c-accent);
   background: var(--c-accent-muted);
   font-weight: 600;
 }

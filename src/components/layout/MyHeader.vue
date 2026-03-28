@@ -178,8 +178,8 @@ export default defineComponent({
 
 .app-brand__name {
   color: var(--hdr-text);
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: bold;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   transition: color 0.15s;

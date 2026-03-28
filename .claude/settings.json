@@ -17,7 +17,8 @@
       "Bash(mv components/LoadingSpinner.vue components/ui/LoadingSpinner.vue)",
       "Bash(mv components/MyOverlay.vue components/ui/MyOverlay.vue)",
       "Bash(mv stores/providers.ts components/stores/providers.ts)",
-      "Bash(rmdir stores:*)"
+      "Bash(rmdir stores:*)",
+      "Bash(find /home/teo/dev/src/my/oidc-demo -not -path */node_modules/* -not -path */dist/* -type f)"
     ],
     "additionalDirectories": [
       "/home/teo/dev/src/my/oidc-demo/src/components"

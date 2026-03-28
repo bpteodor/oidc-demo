@@ -1,6 +1,5 @@
 import {createApp} from 'vue'
 import {createPinia} from 'pinia'
-import axios from "axios"
 import router from './components/routes'
 
 import App from './App.vue'
@@ -12,8 +11,6 @@ declare global {
         tokenChecked: boolean   // true if the token was checked for validity
     }
 }
-
-axios.defaults.timeout = window.APP_CONFIG.axios.defaults.timout
 
 // initialize app
 export const app = createApp(App)

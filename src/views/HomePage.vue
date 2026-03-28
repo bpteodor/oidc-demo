@@ -8,7 +8,7 @@
       <p>In order to start testing your OIDC configuration you have to configure the following</p>
 
       <ol>
-        <li>Go to <code>Configuration</code> to add a new OpenID Provider</li>
+        <li>Go to <code>Configuration</code> to select/add a new OpenID Provider</li>
         <li>Start a <code>Authorization Code Flow</code> or a <code>Client Credentials Flow</code></li>
         <li>Verify the token by calling the <code>Introspection</code> or load user profile data by calling the <code>User Info</code></li>
       </ol>

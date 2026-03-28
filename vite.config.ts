@@ -1,9 +1,9 @@
-import {defineConfig} from 'vite'
+import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    base: "/auth/demo/",
+    base: "/demo/",
     plugins: [vue()],
     server: {
         port: 3000,
@@ -23,5 +23,8 @@ export default defineConfig({
                 charset: false
             }
         }
+    },
+    test: {
+        environment: 'jsdom',
     },
 })

@@ -64,7 +64,7 @@
   --c-border-light:  #2a3a52;
 
   // accent — teal
-  --c-accent:        #16c99a;
+  --c-accent:        #4FDBC8;
   --c-accent-hover:  #0fb48a;
   --c-accent-muted:  rgba(22, 201, 154, 0.15);
   --c-accent-shadow: rgba(22, 201, 154, 0.25);
@@ -73,18 +73,18 @@
   --c-text-primary:  #e2e8f0;
   --c-text-secondary:#94a3b8;
   --c-text-muted:    #4b5e7a;
-  --c-text-link:     #16c99a;
-  --c-text-label:    #16c99a;
+  --c-text-link:     #4FDBC8;
+  --c-text-label:    #4FDBC8;
 
   // status
-  --c-success:       #16c99a;
+  --c-success:       #4FDBC8;
   --c-danger:        #ef4444;
   --c-warning:       #f59e0b;
 
   // header tokens
   --hdr-bg:              #0c1120;
   --hdr-border:          #1e2d42;
-  --hdr-accent:          #16c99a;
+  --hdr-accent:          #4FDBC8;
   --hdr-accent-h:        #0fb48a;
   --hdr-text:            #e2e8f0;
   --hdr-muted:           #94a3b8;
@@ -281,6 +281,11 @@ pre, code {
   background-color: var(--c-bg-code) !important;
   color: var(--c-text-secondary) !important;
   border-radius: 6px;
+}
+
+.container {
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 // ── footer ─────────────────────────────────────────────────────────────────

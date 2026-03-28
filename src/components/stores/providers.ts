@@ -53,10 +53,14 @@ function loadInitialProviders(): OPRecord[] {
 }
 
 export const useProvidersStore = defineStore('providers', {
-    state: () => ({
-        providers: loadInitialProviders(),
-        selectedId: localStorage.getItem(STORAGE_KEY + '_selected') || '',
-    }),
+    state: () => {
+        const providers = loadInitialProviders()
+        const storedId = localStorage.getItem(STORAGE_KEY + '_selected') || ''
+        const selectedId = providers.find(p => p.id === storedId)
+            ? storedId
+            : (providers[0]?.id ?? '')
+        return { providers, selectedId }
+    },
 
     getters: {
         getById: (state) => (id: string) => state.providers.find(p => p.id === id),
@@ -67,6 +71,7 @@ export const useProvidersStore = defineStore('providers', {
         select(id: string) {
             this.selectedId = id
             localStorage.setItem(STORAGE_KEY + '_selected', id)
+            this.resolveDiscovery(id)
         },
 
         _persist() {
@@ -93,6 +98,39 @@ export const useProvidersStore = defineStore('providers', {
                 this.select(this.providers[0]?.id ?? '')
             }
             this._persist()
+        },
+
+        async resolveDiscovery(id: string) {
+            const provider = this.providers.find(p => p.id === id)
+            if (!provider?.discoveryUrl || provider.issuer) return
+            try {
+                const res = await fetch(provider.discoveryUrl)
+                if (!res.ok) return
+                const d = await res.json()
+                const idx = this.providers.findIndex(p => p.id === id)
+                if (idx < 0) return
+                this.providers[idx] = {
+                    ...this.providers[idx],
+                    issuer: d.issuer || '',
+                    authorizationEndpoint: d.authorization_endpoint || '',
+                    tokenEndpoint: d.token_endpoint || '',
+                    userinfoEndpoint: d.userinfo_endpoint || '',
+                    jwksUri: d.jwks_uri || '',
+                    endSessionEndpoint: d.end_session_endpoint || '',
+                    introspectionEndpoint: d.introspection_endpoint || '',
+                    scopesSupported: Array.isArray(d.scopes_supported)
+                        ? d.scopes_supported.join(' ')
+                        : (d.scopes_supported || ''),
+                }
+                this._persist()
+            } catch { /* ignore network errors */ }
+        },
+
+        async resolveAll() {
+            const pending = this.providers
+                .filter(p => p.discoveryUrl && !p.issuer)
+                .map(p => p.id)
+            await Promise.all(pending.map(id => this.resolveDiscovery(id)))
         },
 
         saveClient(providerId: string, client: Omit<ClientRecord, 'id'> & { id?: string }) {

@@ -1,6 +1,5 @@
-//$primary: #545454;
-//$secondary: #878787;
-
+// Bootstrap is imported clean — theming is done entirely via CSS custom
+// properties defined in _custom.scss (no SCSS variable overrides needed).
 @import "bootstrap/scss/bootstrap";
-//@import "bootstrap-icons/font/bootstrap-icons.css";
 @import "@vueform/multiselect/themes/default.scss";
+@import "custom";

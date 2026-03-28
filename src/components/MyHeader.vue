@@ -5,7 +5,7 @@
 
         <!-- Brand -->
         <a class="app-brand" href="/">
-          <span class="app-brand__pill"></span>
+          <i class="bi bi-shield-fill app-brand__icon"></i>
           <span class="app-brand__name">OIDC Demo</span>
         </a>
 
@@ -40,6 +40,17 @@
           </button>
         </div>
 
+        <!-- OP status badge -->
+        <div class="op-status" :class="providersStore.selectedId ? 'op-status--connected' : 'op-status--none'">
+          <span class="op-status__dot"></span>
+          <span>{{ providersStore.selectedId ? (providersStore.providers.find(p => p.id === providersStore.selectedId)?.name ?? 'Connected') : 'No OP' }}</span>
+        </div>
+
+        <!-- Theme toggle -->
+        <button class="op-bar__btn op-bar__btn--icon theme-toggle" :title="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleTheme">
+          <i :class="theme === 'dark' ? 'bi bi-sun' : 'bi bi-moon-stars'"></i>
+        </button>
+
         <!-- User area -->
         <div class="app-user" v-if="isUserLoggedIn">
           <div class="app-user__info">
@@ -61,13 +72,19 @@ import {userManager} from '../services/oidc'
 import {defineComponent} from "vue";
 import {User} from "oidc-client-ts";
 import {useProvidersStore} from '../stores/providers'
+import {useTheme} from '../composables/useTheme'
 
 export default defineComponent({
   name: "MyHeader",
   components: {},
 
   setup() {
-    return {providersStore: useProvidersStore()}
+    const { theme, toggle } = useTheme()
+    return {
+      providersStore: useProvidersStore(),
+      theme,
+      toggleTheme: toggle,
+    }
   },
 
   data: function () {
@@ -123,18 +140,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* ── tokens ────────────────────────────────────────────────────── */
-:root {
-  --hdr-bg:        #0f172a;
-  --hdr-border:    #1e293b;
-  --hdr-accent:    #e9640c;
-  --hdr-text:      #e2e8f0;
-  --hdr-muted:     #94a3b8;
-  --hdr-surface:   #1e293b;
-  --hdr-surface-h: #2d3f55;
-  --hdr-height:    56px;
-}
-
 /* ── shell ─────────────────────────────────────────────────────── */
 .app-navbar {
   height: var(--hdr-height);
@@ -143,6 +148,7 @@ export default defineComponent({
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .app-navbar__inner {
@@ -164,11 +170,10 @@ export default defineComponent({
   flex-shrink: 0;
 }
 
-.app-brand__pill {
-  width: 8px;
-  height: 28px;
-  background: var(--hdr-accent);
-  border-radius: 4px;
+.app-brand__icon {
+  font-size: 1.15rem;
+  color: var(--hdr-accent);
+  filter: drop-shadow(0 0 6px var(--hdr-icon-glow));
 }
 
 .app-brand__name {
@@ -177,6 +182,11 @@ export default defineComponent({
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  transition: color 0.15s;
+}
+
+.app-brand:hover .app-brand__name {
+  color: var(--hdr-accent);
 }
 
 /* ── OP bar ────────────────────────────────────────────────────── */
@@ -225,8 +235,8 @@ export default defineComponent({
 }
 
 .op-bar__select option {
-  background: #1e293b;
-  color: #e2e8f0;
+  background: var(--hdr-surface);
+  color: var(--hdr-text);
 }
 
 .op-bar__chevron {
@@ -258,7 +268,7 @@ export default defineComponent({
 .op-bar__btn:hover {
   background: var(--hdr-surface-h);
   border-color: var(--hdr-accent);
-  color: #fff;
+  color: var(--hdr-text);
 }
 
 .op-bar__btn:disabled {
@@ -278,13 +288,20 @@ export default defineComponent({
 .op-bar__btn--add {
   background: var(--hdr-accent);
   border-color: var(--hdr-accent);
-  color: #fff;
+  color: var(--hdr-btn-add-text);
+  font-weight: 600;
 }
 
 .op-bar__btn--add:hover {
-  background: #c8530a;
-  border-color: #c8530a;
-  color: #fff;
+  background: var(--hdr-accent-h);
+  border-color: var(--hdr-accent-h);
+  color: var(--hdr-btn-add-text);
+}
+
+/* theme toggle — subtle highlight on hover */
+.theme-toggle:hover {
+  color: var(--hdr-accent);
+  border-color: var(--hdr-accent);
 }
 
 /* ── user area ─────────────────────────────────────────────────── */
@@ -313,5 +330,43 @@ export default defineComponent({
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* ── OP status badge ────────────────────────────────────────────── */
+.op-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.75rem;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid var(--hdr-border);
+  background: var(--hdr-surface);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--hdr-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.op-status--connected {
+  border-color: var(--hdr-connected-border);
+  background: var(--hdr-connected-bg);
+  color: var(--hdr-accent);
+}
+
+.op-status__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hdr-muted);
+  flex-shrink: 0;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.op-status--connected .op-status__dot {
+  background: var(--hdr-accent);
+  box-shadow: var(--hdr-dot-shadow);
 }
 </style>

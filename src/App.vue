@@ -15,10 +15,17 @@
 <script lang="ts">
 import MyHeader from "./components/MyHeader.vue"
 import MyFooter from "./components/MyFooter.vue"
+import { useTheme } from './composables/useTheme'
 
 export default {
   name: "App",
   components: {MyHeader, MyFooter},
+
+  setup() {
+    // Initialise theme (sets data-theme on <html> via watchEffect)
+    useTheme()
+  },
+
   computed: {
     isNotInIframe: function () {
       return window.self === window.top
@@ -26,4 +33,3 @@ export default {
   },
 };
 </script>
-

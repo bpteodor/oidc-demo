@@ -1,0 +1,267 @@
+// ── LIGHT theme ────────────────────────────────────────────────────────────
+:root,
+[data-theme="light"] {
+  // surfaces
+  --c-bg-base:       #f0f4f8;
+  --c-bg-sidebar:    #ffffff;
+  --c-bg-surface:    #ffffff;
+  --c-bg-elevated:   #f1f5f9;
+  --c-bg-input:      #ffffff;
+  --c-bg-code:       #f1f5f9;
+
+  // borders
+  --c-border:        #e2e8f0;
+  --c-border-light:  #cbd5e1;
+
+  // accent — blue
+  --c-accent:        #2563eb;
+  --c-accent-hover:  #1d4ed8;
+  --c-accent-muted:  rgba(37, 99, 235, 0.1);
+  --c-accent-shadow: rgba(37, 99, 235, 0.25);
+
+  // text
+  --c-text-primary:  #0f172a;
+  --c-text-secondary:#475569;
+  --c-text-muted:    #94a3b8;
+  --c-text-link:     #2563eb;
+  --c-text-label:    #2563eb;
+
+  // status
+  --c-success:       #16a34a;
+  --c-danger:        #dc2626;
+  --c-warning:       #d97706;
+
+  // header tokens
+  --hdr-bg:              #ffffff;
+  --hdr-border:          #e2e8f0;
+  --hdr-accent:          #2563eb;
+  --hdr-accent-h:        #1d4ed8;
+  --hdr-text:            #0f172a;
+  --hdr-muted:           #64748b;
+  --hdr-surface:         #f1f5f9;
+  --hdr-surface-h:       #e2e8f0;
+  --hdr-height:          56px;
+  --hdr-btn-add-text:    #ffffff;
+  --hdr-icon-glow:       rgba(37, 99, 235, 0.35);
+  --hdr-connected-border:rgba(37, 99, 235, 0.35);
+  --hdr-connected-bg:    rgba(37, 99, 235, 0.07);
+  --hdr-dot-shadow:      0 0 6px rgba(37, 99, 235, 0.65);
+}
+
+// ── DARK theme ─────────────────────────────────────────────────────────────
+[data-theme="dark"] {
+  // surfaces
+  --c-bg-base:       #0c1120;
+  --c-bg-sidebar:    #111827;
+  --c-bg-surface:    #151f33;
+  --c-bg-elevated:   #1a2538;
+  --c-bg-input:      #1a2538;
+  --c-bg-code:       #080e1c;
+
+  // borders
+  --c-border:        #1e2d42;
+  --c-border-light:  #2a3a52;
+
+  // accent — teal
+  --c-accent:        #16c99a;
+  --c-accent-hover:  #0fb48a;
+  --c-accent-muted:  rgba(22, 201, 154, 0.15);
+  --c-accent-shadow: rgba(22, 201, 154, 0.25);
+
+  // text
+  --c-text-primary:  #e2e8f0;
+  --c-text-secondary:#94a3b8;
+  --c-text-muted:    #4b5e7a;
+  --c-text-link:     #16c99a;
+  --c-text-label:    #16c99a;
+
+  // status
+  --c-success:       #16c99a;
+  --c-danger:        #ef4444;
+  --c-warning:       #f59e0b;
+
+  // header tokens
+  --hdr-bg:              #0c1120;
+  --hdr-border:          #1e2d42;
+  --hdr-accent:          #16c99a;
+  --hdr-accent-h:        #0fb48a;
+  --hdr-text:            #e2e8f0;
+  --hdr-muted:           #94a3b8;
+  --hdr-surface:         #1a2538;
+  --hdr-surface-h:       #1f2e45;
+  --hdr-height:          56px;
+  --hdr-btn-add-text:    #0c1120;
+  --hdr-icon-glow:       rgba(22, 201, 154, 0.45);
+  --hdr-connected-border:rgba(22, 201, 154, 0.35);
+  --hdr-connected-bg:    rgba(22, 201, 154, 0.08);
+  --hdr-dot-shadow:      0 0 6px rgba(22, 201, 154, 0.7);
+}
+
+// ── global reset ───────────────────────────────────────────────────────────
+body {
+  background-color: var(--c-bg-base) !important;
+  color: var(--c-text-primary) !important;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+// ── Bootstrap component overrides (use CSS vars so both themes work) ────────
+
+// cards
+.card {
+  background-color: var(--c-bg-surface) !important;
+  border-color: var(--c-border) !important;
+  color: var(--c-text-primary) !important;
+}
+
+.card-header {
+  background-color: var(--c-bg-elevated) !important;
+  border-color: var(--c-border) !important;
+  color: var(--c-text-secondary) !important;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.card-body {
+  background-color: var(--c-bg-surface) !important;
+}
+
+// forms
+.form-control,
+.form-select {
+  background-color: var(--c-bg-input) !important;
+  border-color: var(--c-border) !important;
+  color: var(--c-text-primary) !important;
+
+  &::placeholder { color: var(--c-text-muted) !important; }
+
+  &:focus {
+    background-color: var(--c-bg-elevated) !important;
+    border-color: var(--c-accent) !important;
+    color: var(--c-text-primary) !important;
+    box-shadow: 0 0 0 3px var(--c-accent-muted) !important;
+  }
+
+  &:disabled {
+    background-color: var(--c-bg-elevated) !important;
+    color: var(--c-text-muted) !important;
+  }
+}
+
+.form-label {
+  color: var(--c-text-secondary) !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.form-text { color: var(--c-text-muted) !important; }
+
+.form-check-input {
+  background-color: var(--c-bg-input) !important;
+  border-color: var(--c-border-light) !important;
+
+  &:checked {
+    background-color: var(--c-accent) !important;
+    border-color: var(--c-accent) !important;
+  }
+
+  &:focus { box-shadow: 0 0 0 3px var(--c-accent-muted) !important; }
+}
+
+.form-check-label { color: var(--c-text-secondary) !important; }
+
+.invalid-feedback { color: var(--c-danger) !important; }
+.validation-error  { color: var(--c-danger); font-size: 0.8rem; }
+
+// input group
+.input-group-text {
+  background-color: var(--c-bg-elevated) !important;
+  border-color: var(--c-border) !important;
+  color: var(--c-text-secondary) !important;
+}
+
+// buttons
+.btn-primary {
+  background-color: var(--c-accent) !important;
+  border-color: var(--c-accent) !important;
+  color: var(--hdr-btn-add-text) !important;
+  font-weight: 600;
+
+  &:hover, &:focus, &:active {
+    background-color: var(--c-accent-hover) !important;
+    border-color: var(--c-accent-hover) !important;
+    color: var(--hdr-btn-add-text) !important;
+    box-shadow: 0 0 0 3px var(--c-accent-muted) !important;
+  }
+}
+
+.btn-secondary,
+.btn-default {
+  background-color: var(--c-bg-elevated) !important;
+  border-color: var(--c-border-light) !important;
+  color: var(--c-text-secondary) !important;
+
+  &:hover, &:focus {
+    background-color: var(--c-bg-surface) !important;
+    border-color: var(--c-accent) !important;
+    color: var(--c-text-primary) !important;
+  }
+}
+
+.btn-danger {
+  background-color: transparent !important;
+  border-color: var(--c-danger) !important;
+  color: var(--c-danger) !important;
+
+  &:hover, &:focus {
+    background-color: var(--c-danger) !important;
+    color: #fff !important;
+  }
+}
+
+.btn-sm { font-size: 0.72rem; padding: 0.2rem 0.6rem; }
+
+// links
+a {
+  color: var(--c-text-link);
+  &:hover { color: var(--c-accent-hover); }
+}
+
+// page layout
+.page {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--c-text-primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+// code / pre
+pre, code {
+  background-color: var(--c-bg-code) !important;
+  color: var(--c-text-secondary) !important;
+  border-radius: 6px;
+}
+
+// ── footer ─────────────────────────────────────────────────────────────────
+.my-footer {
+  border-top: 1px solid var(--c-border);
+  padding: 1rem 0;
+  color: var(--c-text-muted);
+  font-size: 0.8rem;
+  background-color: var(--c-bg-base);
+
+  a {
+    color: var(--c-text-muted);
+    text-decoration: none;
+    &:hover { color: var(--c-accent); }
+  }
+}

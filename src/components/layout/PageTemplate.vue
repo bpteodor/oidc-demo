@@ -42,7 +42,7 @@ export interface MenuItem {
 }
 
 const DEFAULT_MENU_ITEMS: MenuItem[] = [
-  { label: 'Configuration', path: '/', icon: 'bi bi-grid-3x3-gap', exact: true },
+  { label: 'Configuration', path: '/config', icon: 'bi bi-grid-3x3-gap', exact: true },
   { label: 'Auth Code Flow', path: '/authorization-code', icon: 'bi bi-lock', exact: true },
   { label: 'Client Credentials', path: '/client-credentials', icon: 'bi bi-key', exact: true },
   { label: 'UserInfo', path: '/user-info', icon: 'bi bi-person-badge', exact: true },

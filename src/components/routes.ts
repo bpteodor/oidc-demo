@@ -2,15 +2,15 @@ import {createRouter, createWebHistory} from 'vue-router'
 import HomePage from '../views/HomePage.vue'
 import ErrorPage from '../views/ErrorPage.vue'
 import OauthCallback from "../views/OauthCallback.vue";
-import OPConfigPage from "../views/OPConfigPage.vue";
+import ConfigPage from "../views/ConfigPage.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {path: '/', component: HomePage,},
+        {path: '/config', component: ConfigPage},
         {path: '/oauth-callback', component: OauthCallback},
         {path: '/error', component: ErrorPage},
-        {path: '/op/:id', component: OPConfigPage},
     ]
 })
 

@@ -75,7 +75,7 @@ export default defineComponent({
         this.roleIcon = user.profile.admin_roles === 'superAdmin' ? 'bi bi-person-plus' : 'bi bi-person'
         this.role = this.roleDisplayNames(user.profile.admin_roles)
       } else {
-        console.warn("[StihlHeader] no user data")
+        console.warn("[MyHeader] no user data")
       }
     },
     logout: function () {

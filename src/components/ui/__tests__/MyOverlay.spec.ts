@@ -10,12 +10,12 @@ describe('MyOverlay', () => {
 
   it('shows overlay div when active is true (default)', () => {
     const wrapper = mount(MyOverlay)
-    expect(wrapper.find('.stihl-overlay').exists()).toBe(true)
+    expect(wrapper.find('.my-overlay').exists()).toBe(true)
   })
 
   it('hides overlay div when active is false', () => {
     const wrapper = mount(MyOverlay, { props: { active: false } })
-    expect(wrapper.find('.stihl-overlay').exists()).toBe(false)
+    expect(wrapper.find('.my-overlay').exists()).toBe(false)
   })
 
   it('shows LoadingSpinner by default when active', () => {
@@ -30,6 +30,6 @@ describe('MyOverlay', () => {
 
   it('applies wrapClass to the root wrapper element', () => {
     const wrapper = mount(MyOverlay, { props: { wrapClass: 'custom-class' } })
-    expect(wrapper.find('.stihl-overlay-wrap').classes()).toContain('custom-class')
+    expect(wrapper.find('.my-overlay-wrap').classes()).toContain('custom-class')
   })
 })

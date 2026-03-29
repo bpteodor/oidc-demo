@@ -10,7 +10,7 @@ export default defineConfig({
         // https://vitejs.dev/config/#server-proxy
         /*proxy: {
             '^/auth': {
-                target: 'https://stihl.dev-servicelayers.io',
+                target: 'https://openid.local:9000',
                 ws: true,
                 changeOrigin: true,
             },

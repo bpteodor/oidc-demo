@@ -27,6 +27,12 @@
               </div>
             </div>
           </div>
+
+          <div class="redirect-uri-reminder">
+            <i class="bi bi-info-circle me-1"></i>
+            Make sure the following redirect URI is registered in the OP for this client:
+            <div class="font-monospace mt-1">{{ redirectUri }}</div>
+          </div>
         </div>
 
         <div class="modal-footer">
@@ -81,6 +87,12 @@ export default defineComponent({
   computed: {
     isNew(): boolean {
       return this.editId === null
+    },
+
+    redirectUri(): string {
+      return (
+        window.location.origin + import.meta.env.BASE_URL + 'oauth-callback'
+      )
     },
   },
 
@@ -139,3 +151,20 @@ export default defineComponent({
   },
 })
 </script>
+
+<style scoped>
+.redirect-uri-reminder {
+  font-size: 0.82rem;
+  color: var(--c-text-secondary);
+  background: var(--c-bg-code);
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  padding: 0.6rem 0.85rem;
+}
+
+.redirect-uri-reminder .font-monospace {
+  font-size: 0.78rem;
+  word-break: break-all;
+  color: var(--c-text-primary);
+}
+</style>

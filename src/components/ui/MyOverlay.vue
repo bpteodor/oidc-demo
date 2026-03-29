@@ -1,9 +1,9 @@
 <template>
-  <div class="position-relative h-100 stihl-overlay-wrap" :class="wrapClass">
+  <div class="position-relative h-100 my-overlay-wrap" :class="wrapClass">
 
     <slot></slot>
 
-    <div class="position-absolute overlay stihl-overlay" v-if="active">
+    <div class="position-absolute overlay my-overlay" v-if="active">
       <loading-spinner v-if="showSpinner" :class="spinnerClass"/>
     </div>
 

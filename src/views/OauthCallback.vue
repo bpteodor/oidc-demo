@@ -16,6 +16,7 @@ import { defineComponent } from 'vue'
 import axios from 'axios'
 import MyOverlay from '../components/ui/MyOverlay.vue'
 import type { AcFlowConfig, AcFlowPkce } from './AuthCodeFlowPage.vue'
+import { useProvidersStore } from '../components/stores/providers'
 
 const STORAGE_CONFIG = 'ac_flow_config'
 const STORAGE_PKCE   = 'ac_flow_pkce'
@@ -97,6 +98,9 @@ export default defineComponent({
 
       try {
         const response = await axios.post(config.tokenEndpoint, params, { headers, ...axiosExtra })
+        if (response.data.access_token) {
+          useProvidersStore().setAccessToken(response.data.access_token)
+        }
         sessionStorage.setItem(STORAGE_RESULT, JSON.stringify(response.data))
         this.$router.push('/authorization-code')
       } catch (e: any) {

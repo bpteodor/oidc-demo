@@ -18,7 +18,7 @@ There is no test runner configured (vitest is a dev dependency but has no config
 
 ### Runtime config
 
-`public/app-config.js` is loaded before the bundle and populates `window.APP_CONFIG`. It holds OIDC settings (`discoveryEndpoint`, `clientId`, `redirectUri`, etc.) and axios timeout. This file is the entry point for environment-specific configuration — it is not bundled.
+`public/app-config.js` is loaded before the bundle and populates `window.CONFIG`. It holds OIDC settings (`discoveryEndpoint`, `clientId`, `redirectUri`, etc.) and axios timeout. This file is the entry point for environment-specific configuration — it is not bundled.
 
 ### Page layout
 

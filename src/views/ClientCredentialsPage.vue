@@ -147,7 +147,7 @@ export default defineComponent({
   data() {
     return {
       form: {
-        clientId: window.APP_CONFIG?.oauth?.clientId || '',
+        clientId: '',
         clientSecret: '',
         tokenEndpointAuthMethod: 'client_secret_basic' as 'client_secret_basic' | 'client_secret_post',
         scopes: '',
@@ -269,6 +269,9 @@ export default defineComponent({
       try {
         const response = await axios.post(this.provider.tokenEndpoint, params, { headers, ...axiosExtra })
         this.flowResult = response.data
+        if (response.data.access_token) {
+          this.providers.setAccessToken(response.data.access_token)
+        }
       } catch (e: any) {
         const errData = e?.response?.data
         this.error = errData?.error_description || errData?.error || e?.message || 'Token request failed.'

@@ -12,8 +12,8 @@
 
       <template v-else>
 
-        <!-- ── Client card ─────────────────────────────────────── -->
-        <app-card title="Client" class="mb-3">
+        <!-- ── Request Parameters card ─────────────────────────────── -->
+        <app-card title="Request Parameters" class="mb-3">
           <div class="row g-3">
 
             <!-- Client ID + pre-configured client picker -->
@@ -58,21 +58,6 @@
               <input-group v-model="form.scopes" label="Scopes" placeholder="openid profile email" hint="Space-separated list of requested scopes." />
             </div>
 
-          </div>
-        </app-card>
-
-        <!-- ── Request parameters card ─────────────────────────── -->
-        <app-card title="Request Parameters" class="mb-3">
-          <div class="row g-3">
-
-            <div class="col-md-6">
-              <input-group v-model="form.acrValues" label="ACR Values" placeholder="urn:mace:incommon:iap:silver" hint="Space-separated list of requested Authentication Context Class References." />
-            </div>
-
-            <div class="col-md-6">
-              <input-group v-model="form.loginHint" label="Login Hint" placeholder="user@example.com" hint="Pre-fill the username/email on the login page." />
-            </div>
-
             <!-- PKCE toggle -->
             <div class="col-12">
               <div class="d-flex align-items-center gap-2 mb-1">
@@ -95,7 +80,7 @@
                   </button>
                 </div>
                 <div class="row g-2">
-                  <div class="col-12">
+                  <div class="col-md-6">
                     <label class="form-label small text-muted mb-1">code_verifier</label>
                     <div class="input-group input-group-sm">
                       <input :value="pkceParams.codeVerifier" type="text" class="form-control font-monospace pkce-value" readonly />
@@ -104,7 +89,7 @@
                       </button>
                     </div>
                   </div>
-                  <div class="col-12">
+                  <div class="col-md-6">
                     <label class="form-label small text-muted mb-1">code_challenge <span class="badge-pkce ms-1">S256</span></label>
                     <div class="input-group input-group-sm">
                       <input :value="pkceParams.codeChallenge" type="text" class="form-control font-monospace pkce-value" readonly />
@@ -117,22 +102,47 @@
               </div>
             </template>
 
-            <!-- State -->
-            <div class="col-md-6">
-              <label class="form-label">State</label>
-              <input v-model="form.state" type="text" class="form-control font-monospace" placeholder="(leave empty to omit)" />
-              <div class="form-text">CSRF protection. Clear to omit from the request.</div>
-            </div>
-
-            <!-- Nonce -->
-            <div class="col-md-6">
-              <label class="form-label">Nonce</label>
-              <input v-model="form.nonce" type="text" class="form-control font-monospace" placeholder="(leave empty to omit)" />
-              <div class="form-text">Replay-attack protection. Clear to omit from the request.</div>
-            </div>
-
           </div>
         </app-card>
+
+        <!-- ── Other Parameters card (collapsible) ─────────────────── -->
+        <div class="card mb-3">
+          <div
+            class="card-header d-flex align-items-center justify-content-between other-params-header"
+            role="button"
+            @click="showOtherParams = !showOtherParams"
+          >
+            <span>Other Parameters</span>
+            <i class="bi" :class="showOtherParams ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+          </div>
+          <div v-show="showOtherParams" class="card-body">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <input-group v-model="form.acrValues" label="ACR Values" placeholder="urn:mace:incommon:iap:silver" hint="Space-separated list of requested Authentication Context Class References." />
+              </div>
+
+              <div class="col-md-6">
+                <input-group v-model="form.loginHint" label="Login Hint" placeholder="user@example.com" hint="Pre-fill the username/email on the login page." />
+              </div>
+
+              <!-- State -->
+              <div class="col-md-6">
+                <label class="form-label">State</label>
+                <input v-model="form.state" type="text" class="form-control font-monospace" placeholder="(leave empty to omit)" />
+                <div class="form-text">CSRF protection. Clear to omit from the request.</div>
+              </div>
+
+              <!-- Nonce -->
+              <div class="col-md-6">
+                <label class="form-label">Nonce</label>
+                <input v-model="form.nonce" type="text" class="form-control font-monospace" placeholder="(leave empty to omit)" />
+                <div class="form-text">Replay-attack protection. Clear to omit from the request.</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
 
         <!-- ── Authorization URL preview ──────────────────────── -->
         <app-card class="mb-4" header-class="d-flex align-items-center justify-content-between" body-class="p-0">
@@ -143,7 +153,12 @@
               {{ urlCopied ? 'Copied' : 'Copy' }}
             </button>
           </template>
-          <pre class="auth-url-preview">{{ authorizationUrl }}</pre>
+          <textarea
+            v-model="editableAuthUrl"
+            class="auth-url-textarea"
+            spellcheck="false"
+            autocomplete="off"
+          ></textarea>
         </app-card>
 
         <!-- ── Start button ────────────────────────────────────── -->
@@ -248,13 +263,6 @@ async function sha256Base64Url(plain: string): Promise<string> {
   return btoa(String.fromCharCode(...new Uint8Array(digest))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
 }
 
-function buildAuthUrl(endpoint: string, params: Array<[string, string]>): string {
-  const qs = params
-    .filter(([, v]) => v.length > 0)
-    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
-    .join('&')
-  return `${endpoint}?${qs}`
-}
 
 function formatAuthUrlForDisplay(endpoint: string, params: Array<[string, string]>): string {
   const filtered = params.filter(([, v]) => v.length > 0)
@@ -296,6 +304,8 @@ export default defineComponent({
         codeChallenge: '',
       },
       showClientDropdown: false,
+      showOtherParams: false,
+      editableAuthUrl: '',
       urlCopied: false,
       flowResult: null as AcFlowResult | null,
     }
@@ -337,6 +347,12 @@ export default defineComponent({
     },
   },
 
+  watch: {
+    authorizationUrl(val: string) {
+      this.editableAuthUrl = val
+    },
+  },
+
   methods: {
     async generatePkce() {
       const codeVerifier = randomBase64Url(32)
@@ -357,7 +373,7 @@ export default defineComponent({
     },
 
     async copyUrl() {
-      const url = this.authorizationUrl.replace(/\n\s*/g, '')
+      const url = this.editableAuthUrl.replace(/\n\s*/g, '')
       await navigator.clipboard.writeText(url)
       this.urlCopied = true
       setTimeout(() => { this.urlCopied = false }, 2000)
@@ -390,26 +406,7 @@ export default defineComponent({
       sessionStorage.setItem(STORAGE_CONFIG, JSON.stringify(config))
       sessionStorage.setItem(STORAGE_PKCE, JSON.stringify(pkce))
 
-      // Build real authorization URL
-      const params: Array<[string, string]> = [
-        ['response_type', 'code'],
-        ['client_id', this.form.clientId],
-        ['redirect_uri', this.form.redirectUri],
-        ['scope', this.form.scopes || 'openid'],
-      ]
-
-      if (this.form.loginHint) params.push(['login_hint', this.form.loginHint])
-      if (this.form.acrValues) params.push(['acr_values', this.form.acrValues])
-
-      if (this.form.pkce) {
-        params.push(['code_challenge', this.pkceParams.codeChallenge])
-        params.push(['code_challenge_method', 'S256'])
-      }
-
-      if (this.form.state) params.push(['state', this.form.state])
-      if (this.form.nonce) params.push(['nonce', this.form.nonce])
-
-      window.location.href = buildAuthUrl(this.provider.authorizationEndpoint, params)
+      window.location.href = this.editableAuthUrl.replace(/\n\s*/g, '')
     },
 
     clearResult() {
@@ -419,10 +416,16 @@ export default defineComponent({
   },
 
   async mounted() {
-    // Pre-generate PKCE params and state/nonce
+    // Pre-generate PKCE params
     await this.generatePkce()
-    //this.form.state = randomBase64Url(16)
-    //this.form.nonce = randomBase64Url(16)
+
+    // Auto-fill clientId from the first client of the selected provider
+    if (!this.form.clientId && this.provider?.clients?.length) {
+      this.form.clientId = this.provider.clients[0].clientId
+    }
+
+    // Sync initial auth URL
+    this.editableAuthUrl = this.authorizationUrl
 
     // Pick up token result stored by OauthCallback after the flow completes
     const raw = sessionStorage.getItem(STORAGE_RESULT)
@@ -448,16 +451,31 @@ export default defineComponent({
   margin-bottom: 1.5rem;
 }
 
-.auth-url-preview {
+.other-params-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.auth-url-textarea {
   font-size: 0.78rem;
   line-height: 1.7;
   white-space: pre-wrap;
   word-break: break-all;
-  margin: 0;
+  width: 100%;
+  min-height: 6rem;
+  resize: vertical;
   padding: 1rem 1.25rem;
   color: var(--c-text-secondary);
   background: var(--c-bg-code);
+  border: none;
   border-radius: 0 0 8px 8px;
+  font-family: var(--bs-font-monospace);
+  outline: none;
+}
+
+.auth-url-textarea:focus {
+  background: var(--c-bg-code);
+  box-shadow: inset 0 0 0 2px var(--c-accent);
 }
 
 .badge-pkce {

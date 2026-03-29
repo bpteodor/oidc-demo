@@ -7,26 +7,3 @@ declare module '*.vue' {
   export default component
 }
 
-interface AppConfig {
-  oauth?: {
-    clientId?: string
-    redirectUri?: string
-    scopes?: string
-  }
-}
-
-interface ProviderConfig {
-  name?: string
-  discovery?: string
-  clients?: Array<{
-    client_id?: string
-    client_secret?: string
-    scopes?: string
-    grants?: string[]
-  }>
-}
-
-declare interface Window {
-  APP_CONFIG?: AppConfig
-  CONFIG?: ProviderConfig[]
-}

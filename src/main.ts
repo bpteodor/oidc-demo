@@ -11,15 +11,16 @@ declare global {
         client_id: string,
         client_secret?: string,
         scopes?: string,
-        grants?: string[],
+        grants?: string[], // todo define allowed grant types
+        auth_method?: 'client_secret_basic'|'client_secret_post'|'none' // todo add more methods?
     }
-    interface OpConfig {
+    interface IdPConfig {
         name: string,
         discovery: string,
         clients: ClientConfig[],
     }
     interface Window {
-        CONFIG: OpConfig[]
+        CONFIG: IdPConfig[]
     }
 }
 

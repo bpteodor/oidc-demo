@@ -91,7 +91,6 @@ export default defineComponent({
 
     redirectUri(): string {
       return (
-        window.APP_CONFIG?.oauth?.redirectUri ||
         window.location.origin + import.meta.env.BASE_URL + 'oauth-callback'
       )
     },

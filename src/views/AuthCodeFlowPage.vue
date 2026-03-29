@@ -282,17 +282,15 @@ export default defineComponent({
   },
 
   data() {
-    const defaultRedirectUri =
-      window.APP_CONFIG?.oauth?.redirectUri ||
-      window.location.origin + import.meta.env.BASE_URL + 'oauth-callback'
+    const defaultRedirectUri = window.location.origin + import.meta.env.BASE_URL + 'oauth-callback'
 
     return {
       form: {
-        clientId: window.APP_CONFIG?.oauth?.clientId || '',
+        clientId: '',
         clientSecret: '',
         tokenEndpointAuthMethod: 'client_secret_basic' as AcFlowConfig['tokenEndpointAuthMethod'],
         redirectUri: defaultRedirectUri,
-        scopes: window.APP_CONFIG?.oauth?.scopes || 'openid profile email',
+        scopes: 'openid profile email',
         acrValues: '',
         loginHint: '',
         pkce: true,

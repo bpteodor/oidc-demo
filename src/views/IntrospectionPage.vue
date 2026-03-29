@@ -135,7 +135,7 @@ export default defineComponent({
     return {
       token: '',
       form: {
-        clientId: window.APP_CONFIG?.oauth?.clientId || '',
+        clientId: '',
         clientSecret: '',
         tokenEndpointAuthMethod: 'client_secret_basic' as 'client_secret_basic' | 'client_secret_post',
       },

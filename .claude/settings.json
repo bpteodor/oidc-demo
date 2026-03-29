@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx npm-check-updates:*)",
+      "Bash(npx -y npm-check-updates --format group)",
+      "Bash(npm install:*)",
+      "Bash(npm config:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(npx vue-tsc:*)"
+    ]
+  }
+}

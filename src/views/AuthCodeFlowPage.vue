@@ -45,18 +45,13 @@
               <input-group v-model="form.clientSecret" type="password" label="Client Secret" placeholder="(leave empty for public client)" autocomplete="off" />
             </div>
 
-            <div class="col-md-6">
+            <div class="col-12">
               <label class="form-label">Token Endpoint Auth Method</label>
               <select v-model="form.tokenEndpointAuthMethod" class="form-select">
                 <option value="client_secret_basic">client_secret_basic — HTTP Basic</option>
                 <option value="client_secret_post">client_secret_post — POST body</option>
                 <option value="none">none — public client</option>
               </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Redirect URI</label>
-              <input :value="form.redirectUri" type="url" class="form-control" readonly />
             </div>
 
             <div class="col-12">

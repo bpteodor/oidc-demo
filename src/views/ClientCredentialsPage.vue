@@ -269,6 +269,9 @@ export default defineComponent({
       try {
         const response = await axios.post(this.provider.tokenEndpoint, params, { headers, ...axiosExtra })
         this.flowResult = response.data
+        if (response.data.access_token) {
+          this.providers.setAccessToken(response.data.access_token)
+        }
       } catch (e: any) {
         const errData = e?.response?.data
         this.error = errData?.error_description || errData?.error || e?.message || 'Token request failed.'

@@ -59,7 +59,7 @@ export const useProvidersStore = defineStore('providers', {
         const selectedId = providers.find(p => p.id === storedId)
             ? storedId
             : (providers[0]?.id ?? '')
-        return { providers, selectedId }
+        return { providers, selectedId, accessToken: '' }
     },
 
     getters: {
@@ -150,6 +150,10 @@ export const useProvidersStore = defineStore('providers', {
             if (!provider) return
             provider.clients = provider.clients.filter(c => c.id !== clientId)
             this._persist()
+        },
+
+        setAccessToken(token: string) {
+            this.accessToken = token
         },
     },
 })

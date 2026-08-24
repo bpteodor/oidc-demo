@@ -1,0 +1,11 @@
+---
+apiVersion: v2
+name: oidc-demo
+description: OIDC Demo — a Vue 3 SPA demonstrating OpenID Connect flows, served via nginx.
+type: application
+version: 0.1.0
+appVersion: "latest"
+dependencies:
+  - name: common
+    repository: https://bjw-s-labs.github.io/helm-charts
+    version: "5.x.x"

@@ -8,7 +8,11 @@
       "Bash(npm audit:*)",
       "Bash(npm run:*)",
       "Bash(npm test:*)",
-      "Bash(npx vue-tsc:*)"
+      "Bash(npx vue-tsc:*)",
+      "Bash(find ./ -type f -name Dockerfile* -o -name docker-compose* -o -name *.yaml -o -name *.yml)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:bjw-s-labs.github.io)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

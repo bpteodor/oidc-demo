@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/library/common/values.schema.json
+
+controllers:
+  main:
+    replicas: 1
+    strategy: RollingUpdate
+
+    containers:
+      main:
+        image:
+          repository: ghcr.io/your-org/oidc-demo
+          tag: latest
+          pullPolicy: IfNotPresent
+
+        probes:
+          liveness:
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /demo/
+                port: 80
+              initialDelaySeconds: 5
+              periodSeconds: 10
+          readiness:
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /demo/
+                port: 80
+              initialDelaySeconds: 5
+              periodSeconds: 10
+
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 64Mi
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 80
+
+ingress:
+  main:
+    # -- Set to true to enable ingress
+    enabled: false
+    annotations: {}
+      # nginx.ingress.kubernetes.io/rewrite-target: /
+      # cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: oidc-demo.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              identifier: main
+              port: http
+    tls: []
+    #  - secretName: oidc-demo-tls
+    #    hosts:
+    #      - oidc-demo.example.com
+
+# -- Runtime configuration for the SPA.
+# This is injected as /usr/share/nginx/html/app-config.js, loaded by the
+# browser before the JS bundle. Edit to point at your OIDC provider(s).
+configMaps:
+  app-config:
+    data:
+      app-config.js: |
+        // Runtime OIDC configuration — customise per environment.
+        window.CONFIG = [
+          {
+            name: "my-OIDC",
+            discovery: "https://openid.example.com/.well-known/openid-configuration",
+            clients: [
+              {
+                client_id: "my-client",
+                client_secret: "secret",
+                scopes: "openid profile email",
+                grants: ["code"],
+              },
+            ],
+          },
+        ];
+
+persistence:
+  app-config:
+    type: configMap
+    identifier: app-config
+    globalMounts:
+      - path: /usr/share/nginx/html/app-config.js
+        subPath: app-config.js
+        readOnly: true

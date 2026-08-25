@@ -1,0 +1,112 @@
+version: 2.1
+orbs:
+  node: circleci/node@7
+  docker: circleci/docker@4
+jobs:
+  build-and-push-image:
+    executor: docker/machine
+    parameters:
+      image_tag:
+        type: string
+    steps:
+      #- setup_remote_docker
+      - checkout
+      - docker/check:
+          docker_username: DOCKER_USER
+          docker_password: DOCKER_PASSWORD
+          registry: $REGISTRY
+      - docker/build:
+          image: $DOCKER_USER/$CIRCLE_PROJECT_REPONAME
+          tag: << parameters.image_tag >>
+      - docker/push:
+          digest_path: /tmp/digest.txt
+          image: $DOCKER_USER/$CIRCLE_PROJECT_REPONAME
+          tag: << parameters.image_tag >>
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
+
+  package-and-push-helm-chart:
+    docker:
+      - image: cimg/base:stable
+    environment:
+      CHART_NAME: "oidc-demo"
+      RELEASE_TAG: << parameters.PARAM_RELEASE_TAG >>
+      HELM_VER: v3.19.0
+    parameters:
+      PARAM_RELEASE_TAG:
+        type: string
+        description: tag used for versioning the helm chart
+    steps:
+      - run:
+          name: Install and configure helm
+          command: sudo curl -L https://get.helm.sh/helm-$HELM_VER-linux-amd64.tar.gz | tar xz && sudo mv linux-amd64/helm /bin/helm && sudo rm -rf linux-amd64
+      - checkout
+      - run:
+          command: 'echo "helm release-tag: $RELEASE_TAG"'
+      # - run:
+      #     name: Check version match
+      #     command: |-
+      #       if [  << parameters.PARAM_CHECK_VER >> -gt 0 ]; then
+      #         echo "checking tag:$RELEASE_TAG matches Chart..."
+      #         if [ "$RELEASE_TAG" != "$(helm show chart helm/oidc-demo |yq '.version')" ]; then
+      #           echo "Version in Chart doesn't match tag" 1>&2
+      #           exit 64
+      #         fi
+      #       else
+      #         echo " $CHART_NAME - $RELEASE_TAG - no version check required"
+      #       fi
+      - run:
+          name: Set ImageTag in values
+          command: sed -i -e 's/(APP_VER)/<< parameters.PARAM_RELEASE_TAG >>/g' helm/oidc-demo/*.yaml
+      - run:
+          name: Update helm dependencies
+          command: helm dep update helm/oidc-demo/
+      - run:
+          name: Packaging the Helm Chart
+          command: helm package helm/oidc-demo/ --version $RELEASE_TAG
+      - run:
+          name: Login to Helm Registry
+          command: helm registry login $OCI_SERVER --username $DOCKER_USER --password $DOCKER_PASSWORD
+      - run:
+          name: Pushing Helm chart to registry
+          command: helm push "$CHART_NAME-$RELEASE_TAG.tgz" "oci://$OCI_SERVER/$DOCKER_USER"
+
+workflows:
+  build-feature-branch:
+    when:
+      and:
+        - not: << pipeline.git.branch.is_default >>
+        - not: << pipeline.git.tag >>
+    jobs:
+      - build-and-push-image:
+          #image_tag: 0.0.0-$CIRCLE_BRANCH
+          image_tag: v0.0.0-<< pipeline.git.branch >>
+          context:
+            - docker-hub
+      - package-and-push-helm-chart:
+          PARAM_RELEASE_TAG: 0.0.0-<< pipeline.git.branch >>
+          requires:
+            - build-and-push-image
+          context:
+            - docker-hub
+
+  build-release:
+    when: << pipeline.git.tag >>
+    jobs:
+      - build-and-push-image:
+          image_tag: v<< pipeline.git.tag >>
+          filters:
+            tags:
+              only: /\d+\.\d+\.\d+.*/
+          context:
+            - docker-hub
+      - package-and-push-helm-chart:
+          requires:
+            - build-and-push-image
+          PARAM_RELEASE_TAG: << pipeline.git.tag >>
+          filters:
+            tags:
+              only: /\d+\.\d+\.\d+.*/
+          context:
+            - docker-hub

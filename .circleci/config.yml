@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
-  node: circleci/node@lts
-  docker: circleci/docker@2.8.0
+  node: circleci/node@7
+  docker: circleci/docker@4
 jobs:
   build-and-push-image:
     executor: docker/machine

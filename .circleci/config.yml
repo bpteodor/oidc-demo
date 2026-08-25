@@ -12,15 +12,15 @@ jobs:
       #- setup_remote_docker
       - checkout
       - docker/check:
-          docker-username: DOCKERHUB_USERNAME
-          docker-password: DOCKERHUB_PASSWORD
+          docker-username: DOCKER_USER
+          docker-password: DOCKER_PASSWORD
           registry: $REGISTRY
       - docker/build:
-          image: $DOCKERHUB_USERNAME/$CIRCLE_PROJECT_REPONAME
+          image: $DOCKER_USER/$CIRCLE_PROJECT_REPONAME
           tag: << parameters.image_tag >>
       - docker/push:
           digest-path: /tmp/digest.txt
-          image: $DOCKERHUB_USERNAME/$CIRCLE_PROJECT_REPONAME
+          image: $DOCKER_USER/$CIRCLE_PROJECT_REPONAME
           tag: << parameters.image_tag >>
       - run:
           command: |
@@ -67,10 +67,10 @@ jobs:
           command: helm package helm/oidc-demo/ --version $RELEASE_TAG
       - run:
           name: Login to Helm Registry
-          command: helm registry login $OCI_SERVER --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
+          command: helm registry login $OCI_SERVER --username $DOCKER_USER --password $DOCKER_PASSWORD
       - run:
           name: Pushing Helm chart to registry
-          command: helm push "$CHART_NAME-$RELEASE_TAG.tgz" "oci://$OCI_SERVER/$DOCKERHUB_USERNAME"
+          command: helm push "$CHART_NAME-$RELEASE_TAG.tgz" "oci://$OCI_SERVER/$DOCKER_USER"
 
 workflows:
   build-feature-branch:

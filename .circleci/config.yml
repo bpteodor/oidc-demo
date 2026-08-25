@@ -12,14 +12,14 @@ jobs:
       #- setup_remote_docker
       - checkout
       - docker/check:
-          docker-username: DOCKER_USER
-          docker-password: DOCKER_PASSWORD
+          docker_username: DOCKER_USER
+          docker_password: DOCKER_PASSWORD
           registry: $REGISTRY
       - docker/build:
           image: $DOCKER_USER/$CIRCLE_PROJECT_REPONAME
           tag: << parameters.image_tag >>
       - docker/push:
-          digest-path: /tmp/digest.txt
+          digest_path: /tmp/digest.txt
           image: $DOCKER_USER/$CIRCLE_PROJECT_REPONAME
           tag: << parameters.image_tag >>
       - run:

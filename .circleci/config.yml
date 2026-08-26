@@ -18,7 +18,7 @@ jobs:
       - docker/build:
           image: $DOCKER_USER/$CIRCLE_PROJECT_REPONAME
           tag: << parameters.image_tag >>
-          extra_build_args: --tag="$DOCKER_USER/$CIRCLE_PROJECT_REPONAME:latest"
+          extra_build_args: --tag=$DOCKER_USER/$CIRCLE_PROJECT_REPONAME:latest
       - docker/push:
           digest_path: /tmp/digest.txt
           image: $DOCKER_USER/$CIRCLE_PROJECT_REPONAME

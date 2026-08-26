@@ -8,7 +8,7 @@ controllers:
     containers:
       main:
         image:
-          repository: ghcr.io/your-org/oidc-demo
+          repository: bpteodor/oidc-demo
           tag: latest
           pullPolicy: IfNotPresent
 

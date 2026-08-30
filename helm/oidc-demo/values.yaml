@@ -9,7 +9,7 @@ controllers:
       main:
         image:
           repository: bpteodor/oidc-demo
-          tag: latest
+          tag: ""
           pullPolicy: IfNotPresent
 
         probes:

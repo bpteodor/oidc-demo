@@ -9,7 +9,7 @@ controllers:
       main:
         image:
           repository: bpteodor/oidc-demo
-          tag: latest
+          tag: "{{.Chart.AppVersion}}" # it should, but does not work as template (see https://bjw-s-labs.github.io/helm-charts/docs/app-template/howto/helm-templates/)
           pullPolicy: IfNotPresent
 
         probes:
@@ -18,7 +18,7 @@ controllers:
             custom: true
             spec:
               httpGet:
-                path: /demo/
+                path: /
                 port: 80
               initialDelaySeconds: 5
               periodSeconds: 10
@@ -27,7 +27,7 @@ controllers:
             custom: true
             spec:
               httpGet:
-                path: /demo/
+                path: /
                 port: 80
               initialDelaySeconds: 5
               periodSeconds: 10

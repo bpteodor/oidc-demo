@@ -18,10 +18,11 @@ jobs:
       - docker/build:
           image: $DOCKER_USER/$CIRCLE_PROJECT_REPONAME
           tag: << parameters.image_tag >>
+          extra_build_args: --tag=$DOCKER_USER/$CIRCLE_PROJECT_REPONAME:latest
       - docker/push:
           digest_path: /tmp/digest.txt
           image: $DOCKER_USER/$CIRCLE_PROJECT_REPONAME
-          tag: << parameters.image_tag >>
+          tag: << parameters.image_tag >>,latest
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
@@ -64,7 +65,7 @@ jobs:
           command: helm dep update helm/oidc-demo/
       - run:
           name: Packaging the Helm Chart
-          command: helm package helm/oidc-demo/ --version $RELEASE_TAG
+          command: helm package helm/oidc-demo/ --version $RELEASE_TAG --app-version "v$RELEASE_TAG"
       - run:
           name: Login to Helm Registry
           command: helm registry login $OCI_SERVER --username $DOCKER_USER --password $DOCKER_PASSWORD
